@@ -8,6 +8,8 @@ import { MessageType } from "@protobuf-ts/runtime";
 import { Schema } from "./sp_common.js";
 import { Command } from "./sp_command.js";
 import { Metric } from "./sp_common.js";
+import { PipelineStepConditions } from "./sp_pipeline.js";
+import { PipelineStep } from "./sp_pipeline.js";
 import { ClientInfo } from "./sp_info.js";
 import { Audience } from "./sp_common.js";
 /**
@@ -65,26 +67,53 @@ export interface HeartbeatRequest {
  */
 export interface NotifyRequest {
     /**
+     * PipelineID that triggered the notification
+     *
      * @generated from protobuf field: string pipeline_id = 1;
      */
     pipelineId: string;
     /**
+     * Use step field instead
+     *
      * @deprecated
      * @generated from protobuf field: string step_name = 2 [deprecated = true];
      */
     stepName: string;
     /**
+     * Audience that triggered the notification since a pipeline
+     * can be attached to multiple audiences.
+     *
      * @generated from protobuf field: protos.Audience audience = 3;
      */
     audience?: Audience;
     /**
+     * The exact time the notification was triggered by the SDK
+     *
      * @generated from protobuf field: int64 occurred_at_unix_ts_utc = 4;
      */
     occurredAtUnixTsUtc: string;
     /**
-     * @generated from protobuf field: string step_id = 5;
+     * Pipeline step that triggered the notification
+     *
+     * @generated from protobuf field: protos.PipelineStep step = 5;
      */
-    stepId: string;
+    step?: PipelineStep;
+    /**
+     * The condition config for this notification.
+     * This message contains metadata which might be useful and also the payload inclusion config.
+     *
+     * @generated from protobuf field: protos.PipelineStepConditions step_condition = 6;
+     */
+    stepCondition?: PipelineStepConditions;
+    /**
+     * Contains the entire payload that triggered the notification
+     * This data or a selection of paths from it can be included inside the notification request
+     * We ship the entire payload to the server because of the complexity of extracting paths
+     * via each SDK.
+     *
+     * @generated from protobuf field: bytes payload = 7;
+     */
+    payload: Uint8Array;
 }
 /**
  * @generated from protobuf message protos.MetricsRequest

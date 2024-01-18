@@ -958,10 +958,36 @@ class HeartbeatRequest(betterproto.Message):
 @dataclass(eq=False, repr=False)
 class NotifyRequest(betterproto.Message):
     pipeline_id: str = betterproto.string_field(1)
+    """PipelineID that triggered the notification"""
+
     step_name: str = betterproto.string_field(2)
+    """Use step field instead"""
+
     audience: "Audience" = betterproto.message_field(3)
+    """
+    Audience that triggered the notification since a pipeline can be attached
+    to multiple audiences.
+    """
+
     occurred_at_unix_ts_utc: int = betterproto.int64_field(4)
-    step_id: str = betterproto.string_field(5)
+    """The exact time the notification was triggered by the SDK"""
+
+    step: "PipelineStep" = betterproto.message_field(5)
+    """Pipeline step that triggered the notification"""
+
+    step_condition: "PipelineStepConditions" = betterproto.message_field(6)
+    """
+    The condition config for this notification. This message contains metadata
+    which might be useful and also the payload inclusion config.
+    """
+
+    payload: bytes = betterproto.bytes_field(7)
+    """
+    Contains the entire payload that triggered the notification This data or a
+    selection of paths from it can be included inside the notification request
+    We ship the entire payload to the server because of the complexity of
+    extracting paths via each SDK.
+    """
 
     def __post_init__(self) -> None:
         super().__post_init__()

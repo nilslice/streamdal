@@ -12,6 +12,8 @@ import { MessageType } from "@protobuf-ts/runtime";
 import { Schema } from "./sp_common.js";
 import { Command } from "./sp_command.js";
 import { Metric } from "./sp_common.js";
+import { PipelineStepConditions } from "./sp_pipeline.js";
+import { PipelineStep } from "./sp_pipeline.js";
 import { ClientInfo } from "./sp_info.js";
 import { Audience } from "./sp_common.js";
 // @generated message type with reflection information, may provide speed optimized methods
@@ -144,11 +146,13 @@ class NotifyRequest$Type extends MessageType {
             { no: 2, name: "step_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "audience", kind: "message", T: () => Audience },
             { no: 4, name: "occurred_at_unix_ts_utc", kind: "scalar", T: 3 /*ScalarType.INT64*/ },
-            { no: 5, name: "step_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 5, name: "step", kind: "message", T: () => PipelineStep },
+            { no: 6, name: "step_condition", kind: "message", T: () => PipelineStepConditions },
+            { no: 7, name: "payload", kind: "scalar", T: 12 /*ScalarType.BYTES*/ }
         ]);
     }
     create(value) {
-        const message = { pipelineId: "", stepName: "", occurredAtUnixTsUtc: "0", stepId: "" };
+        const message = { pipelineId: "", stepName: "", occurredAtUnixTsUtc: "0", payload: new Uint8Array(0) };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -171,8 +175,14 @@ class NotifyRequest$Type extends MessageType {
                 case /* int64 occurred_at_unix_ts_utc */ 4:
                     message.occurredAtUnixTsUtc = reader.int64().toString();
                     break;
-                case /* string step_id */ 5:
-                    message.stepId = reader.string();
+                case /* protos.PipelineStep step */ 5:
+                    message.step = PipelineStep.internalBinaryRead(reader, reader.uint32(), options, message.step);
+                    break;
+                case /* protos.PipelineStepConditions step_condition */ 6:
+                    message.stepCondition = PipelineStepConditions.internalBinaryRead(reader, reader.uint32(), options, message.stepCondition);
+                    break;
+                case /* bytes payload */ 7:
+                    message.payload = reader.bytes();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -198,9 +208,15 @@ class NotifyRequest$Type extends MessageType {
         /* int64 occurred_at_unix_ts_utc = 4; */
         if (message.occurredAtUnixTsUtc !== "0")
             writer.tag(4, WireType.Varint).int64(message.occurredAtUnixTsUtc);
-        /* string step_id = 5; */
-        if (message.stepId !== "")
-            writer.tag(5, WireType.LengthDelimited).string(message.stepId);
+        /* protos.PipelineStep step = 5; */
+        if (message.step)
+            PipelineStep.internalBinaryWrite(message.step, writer.tag(5, WireType.LengthDelimited).fork(), options).join();
+        /* protos.PipelineStepConditions step_condition = 6; */
+        if (message.stepCondition)
+            PipelineStepConditions.internalBinaryWrite(message.stepCondition, writer.tag(6, WireType.LengthDelimited).fork(), options).join();
+        /* bytes payload = 7; */
+        if (message.payload.length)
+            writer.tag(7, WireType.LengthDelimited).bytes(message.payload);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

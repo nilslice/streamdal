@@ -5,6 +5,7 @@ package protos;
 import "sp_command.proto";
 import "sp_common.proto";
 import "sp_info.proto";
+import "sp_pipeline.proto";
 
 option go_package = "github.com/streamdal/streamdal/libs/protos/build/go/protos";
 
@@ -68,11 +69,31 @@ message HeartbeatRequest {
 }
 
 message NotifyRequest {
+  // PipelineID that triggered the notification
   string pipeline_id = 1;
+
+  // Use step field instead
   string step_name = 2 [deprecated=true];
+
+  // Audience that triggered the notification since a pipeline
+  // can be attached to multiple audiences.
   Audience audience = 3;
+
+  // The exact time the notification was triggered by the SDK
   int64 occurred_at_unix_ts_utc = 4;
-  string step_id = 5;
+
+  // Pipeline step that triggered the notification
+  PipelineStep step = 5;
+
+  // The condition config for this notification.
+  // This message contains metadata which might be useful and also the payload inclusion config.
+  PipelineStepConditions step_condition = 6;
+
+  // Contains the entire payload that triggered the notification
+  // This data or a selection of paths from it can be included inside the notification request
+  // We ship the entire payload to the server because of the complexity of extracting paths
+  // via each SDK.
+  bytes payload = 7;
 }
 
 message MetricsRequest {
