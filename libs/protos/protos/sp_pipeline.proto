@@ -32,7 +32,8 @@ message Pipeline {
 
   // Notification configs for this pipeline. Only filled out
   // in external API responses
-  repeated protos.NotificationConfig _notification_configs = 4; // protolint:disable:this FIELD_NAMES_LOWER_SNAKE_CASE
+
+  repeated protos.NotificationConfig _notification_configs = 4 [deprecated=true]; // protolint:disable:this FIELD_NAMES_LOWER_SNAKE_CASE
 }
 
 enum AbortCondition {
@@ -56,21 +57,8 @@ message PipelineStepConditions {
   // Should we include additional metadata that SDK should pass back to user?
   map<string, string> metadata = 3;
 
-  PipelineStepNotifyData notify_data = 4;
-}
-
-enum PipelineStepNotifyDataType {
-  PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET = 0;
-  PIPELINE_STEP_NOTIFY_DATA_TYPE_PAYLOAD = 1;
-  PIPELINE_STEP_NOTIFY_DATA_TYPE_PATHS = 2;
-}
-
-message PipelineStepNotifyData {
-  PipelineStepNotifyDataType type = 1;
-
-  // JSON paths to be included in the notification
-  // If type is PAYLOAD, this is ignored
-  repeated string paths = 2;
+  // Notification configs for this pipeline
+  repeated protos.NotificationConfig _notification_configs = 4; // protolint:disable:this FIELD_NAMES_LOWER_SNAKE_CASE
 }
 
 // A pipeline step is a single step in a pipeline.

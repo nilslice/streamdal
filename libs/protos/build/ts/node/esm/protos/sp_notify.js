@@ -61,6 +61,28 @@ export var NotificationType;
      */
     NotificationType[NotificationType["PAGERDUTY"] = 3] = "PAGERDUTY";
 })(NotificationType || (NotificationType = {}));
+/**
+ * @generated from protobuf enum protos.NotificationPayloadInfoType
+ */
+export var NotificationPayloadInfoType;
+(function (NotificationPayloadInfoType) {
+    /**
+     * @generated from protobuf enum value: NOTIFICATION_PAYLOAD_INFO_TYPE_UNSET = 0;
+     */
+    NotificationPayloadInfoType[NotificationPayloadInfoType["UNSET"] = 0] = "UNSET";
+    /**
+     * @generated from protobuf enum value: NOTIFICATION_PAYLOAD_INFO_TYPE_NO_DATA = 1;
+     */
+    NotificationPayloadInfoType[NotificationPayloadInfoType["NO_DATA"] = 1] = "NO_DATA";
+    /**
+     * @generated from protobuf enum value: NOTIFICATION_PAYLOAD_INFO_TYPE_PAYLOAD = 2;
+     */
+    NotificationPayloadInfoType[NotificationPayloadInfoType["PAYLOAD"] = 2] = "PAYLOAD";
+    /**
+     * @generated from protobuf enum value: NOTIFICATION_PAYLOAD_INFO_TYPE_PATHS = 3;
+     */
+    NotificationPayloadInfoType[NotificationPayloadInfoType["PATHS"] = 3] = "PATHS";
+})(NotificationPayloadInfoType || (NotificationPayloadInfoType = {}));
 // @generated message type with reflection information, may provide speed optimized methods
 class NotificationConfig$Type extends MessageType {
     constructor() {
@@ -68,6 +90,7 @@ class NotificationConfig$Type extends MessageType {
             { no: 1, name: "id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "type", kind: "enum", T: () => ["protos.NotificationType", NotificationType, "NOTIFICATION_TYPE_"] },
+            { no: 4, name: "payload_info", kind: "message", T: () => NotificationPayloadInfo },
             { no: 1000, name: "slack", kind: "message", oneof: "config", T: () => NotificationSlack },
             { no: 1001, name: "email", kind: "message", oneof: "config", T: () => NotificationEmail },
             { no: 1002, name: "pagerduty", kind: "message", oneof: "config", T: () => NotificationPagerDuty }
@@ -93,6 +116,9 @@ class NotificationConfig$Type extends MessageType {
                     break;
                 case /* protos.NotificationType type */ 3:
                     message.type = reader.int32();
+                    break;
+                case /* protos.NotificationPayloadInfo payload_info */ 4:
+                    message.payloadInfo = NotificationPayloadInfo.internalBinaryRead(reader, reader.uint32(), options, message.payloadInfo);
                     break;
                 case /* protos.NotificationSlack slack */ 1000:
                     message.config = {
@@ -133,6 +159,9 @@ class NotificationConfig$Type extends MessageType {
         /* protos.NotificationType type = 3; */
         if (message.type !== 0)
             writer.tag(3, WireType.Varint).int32(message.type);
+        /* protos.NotificationPayloadInfo payload_info = 4; */
+        if (message.payloadInfo)
+            NotificationPayloadInfo.internalBinaryWrite(message.payloadInfo, writer.tag(4, WireType.LengthDelimited).fork(), options).join();
         /* protos.NotificationSlack slack = 1000; */
         if (message.config.oneofKind === "slack")
             NotificationSlack.internalBinaryWrite(message.config.slack, writer.tag(1000, WireType.LengthDelimited).fork(), options).join();
@@ -491,3 +520,57 @@ class NotificationPagerDuty$Type extends MessageType {
  * @generated MessageType for protobuf message protos.NotificationPagerDuty
  */
 export const NotificationPagerDuty = new NotificationPagerDuty$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class NotificationPayloadInfo$Type extends MessageType {
+    constructor() {
+        super("protos.NotificationPayloadInfo", [
+            { no: 1, name: "type", kind: "enum", T: () => ["protos.NotificationPayloadInfoType", NotificationPayloadInfoType, "NOTIFICATION_PAYLOAD_INFO_TYPE_"] },
+            { no: 2, name: "paths", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value) {
+        const message = { type: 0, paths: [] };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader, length, options, target) {
+        let message = target !== null && target !== void 0 ? target : this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* protos.NotificationPayloadInfoType type */ 1:
+                    message.type = reader.int32();
+                    break;
+                case /* repeated string paths */ 2:
+                    message.paths.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message, writer, options) {
+        /* protos.NotificationPayloadInfoType type = 1; */
+        if (message.type !== 0)
+            writer.tag(1, WireType.Varint).int32(message.type);
+        /* repeated string paths = 2; */
+        for (let i = 0; i < message.paths.length; i++)
+            writer.tag(2, WireType.LengthDelimited).string(message.paths[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message protos.NotificationPayloadInfo
+ */
+export const NotificationPayloadInfo = new NotificationPayloadInfo$Type();

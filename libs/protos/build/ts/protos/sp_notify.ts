@@ -28,6 +28,10 @@ export interface NotificationConfig {
      */
     type: NotificationType;
     /**
+     * @generated from protobuf field: protos.NotificationPayloadInfo payload_info = 4;
+     */
+    payloadInfo?: NotificationPayloadInfo;
+    /**
      * @generated from protobuf oneof: config
      */
     config: {
@@ -204,6 +208,22 @@ export enum NotificationPagerDuty_Urgency {
     HIGH = 2
 }
 /**
+ * @generated from protobuf message protos.NotificationPayloadInfo
+ */
+export interface NotificationPayloadInfo {
+    /**
+     * @generated from protobuf field: protos.NotificationPayloadInfoType type = 1;
+     */
+    type: NotificationPayloadInfoType;
+    /**
+     * JSON paths to be included in the notification
+     * If type is PAYLOAD, this is ignored
+     *
+     * @generated from protobuf field: repeated string paths = 2;
+     */
+    paths: string[];
+}
+/**
  * @generated from protobuf enum protos.NotificationType
  */
 export enum NotificationType {
@@ -224,6 +244,27 @@ export enum NotificationType {
      */
     PAGERDUTY = 3
 }
+/**
+ * @generated from protobuf enum protos.NotificationPayloadInfoType
+ */
+export enum NotificationPayloadInfoType {
+    /**
+     * @generated from protobuf enum value: NOTIFICATION_PAYLOAD_INFO_TYPE_UNSET = 0;
+     */
+    UNSET = 0,
+    /**
+     * @generated from protobuf enum value: NOTIFICATION_PAYLOAD_INFO_TYPE_NO_DATA = 1;
+     */
+    NO_DATA = 1,
+    /**
+     * @generated from protobuf enum value: NOTIFICATION_PAYLOAD_INFO_TYPE_PAYLOAD = 2;
+     */
+    PAYLOAD = 2,
+    /**
+     * @generated from protobuf enum value: NOTIFICATION_PAYLOAD_INFO_TYPE_PATHS = 3;
+     */
+    PATHS = 3
+}
 // @generated message type with reflection information, may provide speed optimized methods
 class NotificationConfig$Type extends MessageType<NotificationConfig> {
     constructor() {
@@ -231,6 +272,7 @@ class NotificationConfig$Type extends MessageType<NotificationConfig> {
             { no: 1, name: "id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "type", kind: "enum", T: () => ["protos.NotificationType", NotificationType, "NOTIFICATION_TYPE_"] },
+            { no: 4, name: "payload_info", kind: "message", T: () => NotificationPayloadInfo },
             { no: 1000, name: "slack", kind: "message", oneof: "config", T: () => NotificationSlack },
             { no: 1001, name: "email", kind: "message", oneof: "config", T: () => NotificationEmail },
             { no: 1002, name: "pagerduty", kind: "message", oneof: "config", T: () => NotificationPagerDuty }
@@ -256,6 +298,9 @@ class NotificationConfig$Type extends MessageType<NotificationConfig> {
                     break;
                 case /* protos.NotificationType type */ 3:
                     message.type = reader.int32();
+                    break;
+                case /* protos.NotificationPayloadInfo payload_info */ 4:
+                    message.payloadInfo = NotificationPayloadInfo.internalBinaryRead(reader, reader.uint32(), options, message.payloadInfo);
                     break;
                 case /* protos.NotificationSlack slack */ 1000:
                     message.config = {
@@ -296,6 +341,9 @@ class NotificationConfig$Type extends MessageType<NotificationConfig> {
         /* protos.NotificationType type = 3; */
         if (message.type !== 0)
             writer.tag(3, WireType.Varint).int32(message.type);
+        /* protos.NotificationPayloadInfo payload_info = 4; */
+        if (message.payloadInfo)
+            NotificationPayloadInfo.internalBinaryWrite(message.payloadInfo, writer.tag(4, WireType.LengthDelimited).fork(), options).join();
         /* protos.NotificationSlack slack = 1000; */
         if (message.config.oneofKind === "slack")
             NotificationSlack.internalBinaryWrite(message.config.slack, writer.tag(1000, WireType.LengthDelimited).fork(), options).join();
@@ -654,3 +702,57 @@ class NotificationPagerDuty$Type extends MessageType<NotificationPagerDuty> {
  * @generated MessageType for protobuf message protos.NotificationPagerDuty
  */
 export const NotificationPagerDuty = new NotificationPagerDuty$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class NotificationPayloadInfo$Type extends MessageType<NotificationPayloadInfo> {
+    constructor() {
+        super("protos.NotificationPayloadInfo", [
+            { no: 1, name: "type", kind: "enum", T: () => ["protos.NotificationPayloadInfoType", NotificationPayloadInfoType, "NOTIFICATION_PAYLOAD_INFO_TYPE_"] },
+            { no: 2, name: "paths", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<NotificationPayloadInfo>): NotificationPayloadInfo {
+        const message = { type: 0, paths: [] };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<NotificationPayloadInfo>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: NotificationPayloadInfo): NotificationPayloadInfo {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* protos.NotificationPayloadInfoType type */ 1:
+                    message.type = reader.int32();
+                    break;
+                case /* repeated string paths */ 2:
+                    message.paths.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: NotificationPayloadInfo, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* protos.NotificationPayloadInfoType type = 1; */
+        if (message.type !== 0)
+            writer.tag(1, WireType.Varint).int32(message.type);
+        /* repeated string paths = 2; */
+        for (let i = 0; i < message.paths.length; i++)
+            writer.tag(2, WireType.LengthDelimited).string(message.paths[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message protos.NotificationPayloadInfo
+ */
+export const NotificationPayloadInfo = new NotificationPayloadInfo$Type();

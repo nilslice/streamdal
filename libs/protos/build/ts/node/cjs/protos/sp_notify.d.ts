@@ -21,6 +21,10 @@ export interface NotificationConfig {
      */
     type: NotificationType;
     /**
+     * @generated from protobuf field: protos.NotificationPayloadInfo payload_info = 4;
+     */
+    payloadInfo?: NotificationPayloadInfo;
+    /**
      * @generated from protobuf oneof: config
      */
     config: {
@@ -197,6 +201,22 @@ export declare enum NotificationPagerDuty_Urgency {
     HIGH = 2
 }
 /**
+ * @generated from protobuf message protos.NotificationPayloadInfo
+ */
+export interface NotificationPayloadInfo {
+    /**
+     * @generated from protobuf field: protos.NotificationPayloadInfoType type = 1;
+     */
+    type: NotificationPayloadInfoType;
+    /**
+     * JSON paths to be included in the notification
+     * If type is PAYLOAD, this is ignored
+     *
+     * @generated from protobuf field: repeated string paths = 2;
+     */
+    paths: string[];
+}
+/**
  * @generated from protobuf enum protos.NotificationType
  */
 export declare enum NotificationType {
@@ -216,6 +236,27 @@ export declare enum NotificationType {
      * @generated from protobuf enum value: NOTIFICATION_TYPE_PAGERDUTY = 3;
      */
     PAGERDUTY = 3
+}
+/**
+ * @generated from protobuf enum protos.NotificationPayloadInfoType
+ */
+export declare enum NotificationPayloadInfoType {
+    /**
+     * @generated from protobuf enum value: NOTIFICATION_PAYLOAD_INFO_TYPE_UNSET = 0;
+     */
+    UNSET = 0,
+    /**
+     * @generated from protobuf enum value: NOTIFICATION_PAYLOAD_INFO_TYPE_NO_DATA = 1;
+     */
+    NO_DATA = 1,
+    /**
+     * @generated from protobuf enum value: NOTIFICATION_PAYLOAD_INFO_TYPE_PAYLOAD = 2;
+     */
+    PAYLOAD = 2,
+    /**
+     * @generated from protobuf enum value: NOTIFICATION_PAYLOAD_INFO_TYPE_PATHS = 3;
+     */
+    PATHS = 3
 }
 declare class NotificationConfig$Type extends MessageType<NotificationConfig> {
     constructor();
@@ -277,4 +318,14 @@ declare class NotificationPagerDuty$Type extends MessageType<NotificationPagerDu
  * @generated MessageType for protobuf message protos.NotificationPagerDuty
  */
 export declare const NotificationPagerDuty: NotificationPagerDuty$Type;
+declare class NotificationPayloadInfo$Type extends MessageType<NotificationPayloadInfo> {
+    constructor();
+    create(value?: PartialMessage<NotificationPayloadInfo>): NotificationPayloadInfo;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: NotificationPayloadInfo): NotificationPayloadInfo;
+    internalBinaryWrite(message: NotificationPayloadInfo, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+}
+/**
+ * @generated MessageType for protobuf message protos.NotificationPayloadInfo
+ */
+export declare const NotificationPayloadInfo: NotificationPayloadInfo$Type;
 export {};

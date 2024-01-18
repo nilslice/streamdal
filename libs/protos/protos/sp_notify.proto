@@ -18,6 +18,8 @@ message NotificationConfig {
 
   NotificationType type = 3;
 
+  NotificationPayloadInfo payload_info = 4;
+
   oneof config {
     NotificationSlack slack = 1000;
     NotificationEmail email = 1001;
@@ -80,4 +82,19 @@ message NotificationPagerDuty {
   string service_id = 3;
 
   Urgency urgency = 4;
+}
+
+enum NotificationPayloadInfoType {
+  NOTIFICATION_PAYLOAD_INFO_TYPE_UNSET = 0;
+  NOTIFICATION_PAYLOAD_INFO_TYPE_NO_DATA = 1;
+  NOTIFICATION_PAYLOAD_INFO_TYPE_PAYLOAD = 2;
+  NOTIFICATION_PAYLOAD_INFO_TYPE_PATHS = 3;
+}
+
+message NotificationPayloadInfo {
+  NotificationPayloadInfoType type = 1;
+
+  // JSON paths to be included in the notification
+  // If type is PAYLOAD, this is ignored
+  repeated string paths = 2;
 }

@@ -43,10 +43,8 @@ export interface Pipeline {
      */
     steps: PipelineStep[];
     /**
-     * Notification configs for this pipeline. Only filled out
-     * in external API responses
-     *
-     * @generated from protobuf field: repeated protos.NotificationConfig _notification_configs = 4;
+     * @deprecated
+     * @generated from protobuf field: repeated protos.NotificationConfig _notification_configs = 4 [deprecated = true];
      */
     NotificationConfigs: NotificationConfig[];
 }
@@ -82,25 +80,11 @@ export interface PipelineStepConditions {
         [key: string]: string;
     };
     /**
-     * @generated from protobuf field: protos.PipelineStepNotifyData notify_data = 4;
-     */
-    notifyData?: PipelineStepNotifyData;
-}
-/**
- * @generated from protobuf message protos.PipelineStepNotifyData
- */
-export interface PipelineStepNotifyData {
-    /**
-     * @generated from protobuf field: protos.PipelineStepNotifyDataType type = 1;
-     */
-    type: PipelineStepNotifyDataType;
-    /**
-     * JSON paths to be included in the notification
-     * If type is PAYLOAD, this is ignored
+     * Notification configs for this pipeline
      *
-     * @generated from protobuf field: repeated string paths = 2;
+     * @generated from protobuf field: repeated protos.NotificationConfig _notification_configs = 4;
      */
-    paths: string[];
+    NotificationConfigs: NotificationConfig[];
 }
 /**
  * A pipeline step is a single step in a pipeline.
@@ -240,23 +224,6 @@ export declare enum AbortCondition {
      */
     ABORT_ALL = 2
 }
-/**
- * @generated from protobuf enum protos.PipelineStepNotifyDataType
- */
-export declare enum PipelineStepNotifyDataType {
-    /**
-     * @generated from protobuf enum value: PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET = 0;
-     */
-    UNSET = 0,
-    /**
-     * @generated from protobuf enum value: PIPELINE_STEP_NOTIFY_DATA_TYPE_PAYLOAD = 1;
-     */
-    PAYLOAD = 1,
-    /**
-     * @generated from protobuf enum value: PIPELINE_STEP_NOTIFY_DATA_TYPE_PATHS = 2;
-     */
-    PATHS = 2
-}
 declare class Pipeline$Type extends MessageType<Pipeline> {
     constructor();
     create(value?: PartialMessage<Pipeline>): Pipeline;
@@ -278,16 +245,6 @@ declare class PipelineStepConditions$Type extends MessageType<PipelineStepCondit
  * @generated MessageType for protobuf message protos.PipelineStepConditions
  */
 export declare const PipelineStepConditions: PipelineStepConditions$Type;
-declare class PipelineStepNotifyData$Type extends MessageType<PipelineStepNotifyData> {
-    constructor();
-    create(value?: PartialMessage<PipelineStepNotifyData>): PipelineStepNotifyData;
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: PipelineStepNotifyData): PipelineStepNotifyData;
-    internalBinaryWrite(message: PipelineStepNotifyData, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
-}
-/**
- * @generated MessageType for protobuf message protos.PipelineStepNotifyData
- */
-export declare const PipelineStepNotifyData: PipelineStepNotifyData$Type;
 declare class PipelineStep$Type extends MessageType<PipelineStep> {
     constructor();
     create(value?: PartialMessage<PipelineStep>): PipelineStep;

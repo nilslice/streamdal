@@ -5,26 +5,32 @@ from google.protobuf import message as _message
 from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
+NOTIFICATION_PAYLOAD_INFO_TYPE_NO_DATA: NotificationPayloadInfoType
+NOTIFICATION_PAYLOAD_INFO_TYPE_PATHS: NotificationPayloadInfoType
+NOTIFICATION_PAYLOAD_INFO_TYPE_PAYLOAD: NotificationPayloadInfoType
+NOTIFICATION_PAYLOAD_INFO_TYPE_UNSET: NotificationPayloadInfoType
 NOTIFICATION_TYPE_EMAIL: NotificationType
 NOTIFICATION_TYPE_PAGERDUTY: NotificationType
 NOTIFICATION_TYPE_SLACK: NotificationType
 NOTIFICATION_TYPE_UNSET: NotificationType
 
 class NotificationConfig(_message.Message):
-    __slots__ = ["email", "id", "name", "pagerduty", "slack", "type"]
+    __slots__ = ["email", "id", "name", "pagerduty", "payload_info", "slack", "type"]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     PAGERDUTY_FIELD_NUMBER: _ClassVar[int]
+    PAYLOAD_INFO_FIELD_NUMBER: _ClassVar[int]
     SLACK_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     email: NotificationEmail
     id: str
     name: str
     pagerduty: NotificationPagerDuty
+    payload_info: NotificationPayloadInfo
     slack: NotificationSlack
     type: NotificationType
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., type: _Optional[_Union[NotificationType, str]] = ..., slack: _Optional[_Union[NotificationSlack, _Mapping]] = ..., email: _Optional[_Union[NotificationEmail, _Mapping]] = ..., pagerduty: _Optional[_Union[NotificationPagerDuty, _Mapping]] = ...) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., type: _Optional[_Union[NotificationType, str]] = ..., payload_info: _Optional[_Union[NotificationPayloadInfo, _Mapping]] = ..., slack: _Optional[_Union[NotificationSlack, _Mapping]] = ..., email: _Optional[_Union[NotificationEmail, _Mapping]] = ..., pagerduty: _Optional[_Union[NotificationPagerDuty, _Mapping]] = ...) -> None: ...
 
 class NotificationEmail(_message.Message):
     __slots__ = ["from_address", "recipients", "ses", "smtp", "type"]
@@ -86,6 +92,14 @@ class NotificationPagerDuty(_message.Message):
     urgency: NotificationPagerDuty.Urgency
     def __init__(self, token: _Optional[str] = ..., email: _Optional[str] = ..., service_id: _Optional[str] = ..., urgency: _Optional[_Union[NotificationPagerDuty.Urgency, str]] = ...) -> None: ...
 
+class NotificationPayloadInfo(_message.Message):
+    __slots__ = ["paths", "type"]
+    PATHS_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    paths: _containers.RepeatedScalarFieldContainer[str]
+    type: NotificationPayloadInfoType
+    def __init__(self, type: _Optional[_Union[NotificationPayloadInfoType, str]] = ..., paths: _Optional[_Iterable[str]] = ...) -> None: ...
+
 class NotificationSlack(_message.Message):
     __slots__ = ["bot_token", "channel"]
     BOT_TOKEN_FIELD_NUMBER: _ClassVar[int]
@@ -95,4 +109,7 @@ class NotificationSlack(_message.Message):
     def __init__(self, bot_token: _Optional[str] = ..., channel: _Optional[str] = ...) -> None: ...
 
 class NotificationType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = []
+
+class NotificationPayloadInfoType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []

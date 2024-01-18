@@ -72,6 +72,13 @@ class NotificationType(betterproto.Enum):
     NOTIFICATION_TYPE_PAGERDUTY = 3
 
 
+class NotificationPayloadInfoType(betterproto.Enum):
+    NOTIFICATION_PAYLOAD_INFO_TYPE_UNSET = 0
+    NOTIFICATION_PAYLOAD_INFO_TYPE_NO_DATA = 1
+    NOTIFICATION_PAYLOAD_INFO_TYPE_PAYLOAD = 2
+    NOTIFICATION_PAYLOAD_INFO_TYPE_PATHS = 3
+
+
 class NotificationEmailType(betterproto.Enum):
     TYPE_UNSET = 0
     TYPE_SMTP = 1
@@ -88,12 +95,6 @@ class AbortCondition(betterproto.Enum):
     ABORT_CONDITION_UNSET = 0
     ABORT_CONDITION_ABORT_CURRENT = 1
     ABORT_CONDITION_ABORT_ALL = 2
-
-
-class PipelineStepNotifyDataType(betterproto.Enum):
-    PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET = 0
-    PIPELINE_STEP_NOTIFY_DATA_TYPE_PAYLOAD = 1
-    PIPELINE_STEP_NOTIFY_DATA_TYPE_PATHS = 2
 
 
 class ClientType(betterproto.Enum):
@@ -259,6 +260,7 @@ class NotificationConfig(betterproto.Message):
     id: Optional[str] = betterproto.string_field(1, optional=True, group="_id")
     name: str = betterproto.string_field(2)
     type: "NotificationType" = betterproto.enum_field(3)
+    payload_info: "NotificationPayloadInfo" = betterproto.message_field(4)
     slack: "NotificationSlack" = betterproto.message_field(1000, group="config")
     email: "NotificationEmail" = betterproto.message_field(1001, group="config")
     pagerduty: "NotificationPagerDuty" = betterproto.message_field(1002, group="config")
@@ -310,6 +312,16 @@ class NotificationPagerDuty(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class NotificationPayloadInfo(betterproto.Message):
+    type: "NotificationPayloadInfoType" = betterproto.enum_field(1)
+    paths: List[str] = betterproto.string_field(2)
+    """
+    JSON paths to be included in the notification If type is PAYLOAD, this is
+    ignored
+    """
+
+
+@dataclass(eq=False, repr=False)
 class Pipeline(betterproto.Message):
     """
     Pipeline is a structure that holds one or more pipeline steps. This
@@ -330,10 +342,13 @@ class Pipeline(betterproto.Message):
     """One or more steps to execute"""
 
     notification_configs: List["NotificationConfig"] = betterproto.message_field(4)
-    """
-    Notification configs for this pipeline. Only filled out in external API
-    responses
-    """
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        if self.is_set("notification_configs"):
+            warnings.warn(
+                "Pipeline.notification_configs is deprecated", DeprecationWarning
+            )
 
 
 @dataclass(eq=False, repr=False)
@@ -361,7 +376,8 @@ class PipelineStepConditions(betterproto.Message):
     Should we include additional metadata that SDK should pass back to user?
     """
 
-    notify_data: "PipelineStepNotifyData" = betterproto.message_field(4)
+    notification_configs: List["NotificationConfig"] = betterproto.message_field(4)
+    """Notification configs for this pipeline"""
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -369,16 +385,6 @@ class PipelineStepConditions(betterproto.Message):
             warnings.warn(
                 "PipelineStepConditions.notify is deprecated", DeprecationWarning
             )
-
-
-@dataclass(eq=False, repr=False)
-class PipelineStepNotifyData(betterproto.Message):
-    type: "PipelineStepNotifyDataType" = betterproto.enum_field(1)
-    paths: List[str] = betterproto.string_field(2)
-    """
-    JSON paths to be included in the notification If type is PAYLOAD, this is
-    ignored
-    """
 
 
 @dataclass(eq=False, repr=False)

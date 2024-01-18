@@ -19,9 +19,6 @@ ABORT_CONDITION_ABORT_ALL: AbortCondition
 ABORT_CONDITION_ABORT_CURRENT: AbortCondition
 ABORT_CONDITION_UNSET: AbortCondition
 DESCRIPTOR: _descriptor.FileDescriptor
-PIPELINE_STEP_NOTIFY_DATA_TYPE_PATHS: PipelineStepNotifyDataType
-PIPELINE_STEP_NOTIFY_DATA_TYPE_PAYLOAD: PipelineStepNotifyDataType
-PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET: PipelineStepNotifyDataType
 
 class Pipeline(_message.Message):
     __slots__ = ["_notification_configs", "id", "name", "steps"]
@@ -76,7 +73,7 @@ class PipelineStep(_message.Message):
     def __init__(self, name: _Optional[str] = ..., on_success: _Optional[_Union[PipelineStepConditions, _Mapping]] = ..., on_failure: _Optional[_Union[PipelineStepConditions, _Mapping]] = ..., dynamic: bool = ..., on_error: _Optional[_Union[PipelineStepConditions, _Mapping]] = ..., detective: _Optional[_Union[_sp_steps_detective_pb2.DetectiveStep, _Mapping]] = ..., transform: _Optional[_Union[_sp_steps_transform_pb2.TransformStep, _Mapping]] = ..., encode: _Optional[_Union[_sp_steps_encode_pb2.EncodeStep, _Mapping]] = ..., decode: _Optional[_Union[_sp_steps_decode_pb2.DecodeStep, _Mapping]] = ..., custom: _Optional[_Union[_sp_steps_custom_pb2.CustomStep, _Mapping]] = ..., http_request: _Optional[_Union[_sp_steps_httprequest_pb2.HttpRequestStep, _Mapping]] = ..., kv: _Optional[_Union[_sp_steps_kv_pb2.KVStep, _Mapping]] = ..., infer_schema: _Optional[_Union[_sp_steps_inferschema_pb2.InferSchemaStep, _Mapping]] = ..., valid_json: _Optional[_Union[_sp_steps_valid_json_pb2.ValidJSONStep, _Mapping]] = ..., schema_validation: _Optional[_Union[_sp_steps_schema_validation_pb2.SchemaValidationStep, _Mapping]] = ..., _wasm_id: _Optional[str] = ..., _wasm_bytes: _Optional[bytes] = ..., _wasm_function: _Optional[str] = ...) -> None: ...
 
 class PipelineStepConditions(_message.Message):
-    __slots__ = ["abort", "metadata", "notify", "notify_data"]
+    __slots__ = ["_notification_configs", "abort", "metadata", "notify"]
     class MetadataEntry(_message.Message):
         __slots__ = ["key", "value"]
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -86,24 +83,13 @@ class PipelineStepConditions(_message.Message):
         def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
     ABORT_FIELD_NUMBER: _ClassVar[int]
     METADATA_FIELD_NUMBER: _ClassVar[int]
-    NOTIFY_DATA_FIELD_NUMBER: _ClassVar[int]
     NOTIFY_FIELD_NUMBER: _ClassVar[int]
+    _NOTIFICATION_CONFIGS_FIELD_NUMBER: _ClassVar[int]
+    _notification_configs: _containers.RepeatedCompositeFieldContainer[_sp_notify_pb2.NotificationConfig]
     abort: AbortCondition
     metadata: _containers.ScalarMap[str, str]
     notify: bool
-    notify_data: PipelineStepNotifyData
-    def __init__(self, abort: _Optional[_Union[AbortCondition, str]] = ..., notify: bool = ..., metadata: _Optional[_Mapping[str, str]] = ..., notify_data: _Optional[_Union[PipelineStepNotifyData, _Mapping]] = ...) -> None: ...
-
-class PipelineStepNotifyData(_message.Message):
-    __slots__ = ["paths", "type"]
-    PATHS_FIELD_NUMBER: _ClassVar[int]
-    TYPE_FIELD_NUMBER: _ClassVar[int]
-    paths: _containers.RepeatedScalarFieldContainer[str]
-    type: PipelineStepNotifyDataType
-    def __init__(self, type: _Optional[_Union[PipelineStepNotifyDataType, str]] = ..., paths: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, abort: _Optional[_Union[AbortCondition, str]] = ..., notify: bool = ..., metadata: _Optional[_Mapping[str, str]] = ..., _notification_configs: _Optional[_Iterable[_Union[_sp_notify_pb2.NotificationConfig, _Mapping]]] = ...) -> None: ...
 
 class AbortCondition(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []
-
-class PipelineStepNotifyDataType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []
