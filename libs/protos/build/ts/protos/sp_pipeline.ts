@@ -74,8 +74,10 @@ export interface PipelineStepConditions {
     abort: AbortCondition;
     /**
      * Should we trigger a notification?
+     * This is deprecated and you should use notify_data field instead
      *
-     * @generated from protobuf field: bool notify = 2;
+     * @deprecated
+     * @generated from protobuf field: bool notify = 2 [deprecated = true];
      */
     notify: boolean;
     /**
@@ -86,6 +88,26 @@ export interface PipelineStepConditions {
     metadata: {
         [key: string]: string;
     };
+    /**
+     * @generated from protobuf field: protos.PipelineStepNotifyData notify_data = 4;
+     */
+    notifyData?: PipelineStepNotifyData;
+}
+/**
+ * @generated from protobuf message protos.PipelineStepNotifyData
+ */
+export interface PipelineStepNotifyData {
+    /**
+     * @generated from protobuf field: protos.PipelineStepNotifyDataType type = 1;
+     */
+    type: PipelineStepNotifyDataType;
+    /**
+     * JSON paths to be included in the notification
+     * If type is PAYLOAD, this is ignored
+     *
+     * @generated from protobuf field: repeated string paths = 2;
+     */
+    paths: string[];
 }
 /**
  * A pipeline step is a single step in a pipeline.
@@ -225,6 +247,23 @@ export enum AbortCondition {
      */
     ABORT_ALL = 2
 }
+/**
+ * @generated from protobuf enum protos.PipelineStepNotifyDataType
+ */
+export enum PipelineStepNotifyDataType {
+    /**
+     * @generated from protobuf enum value: PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET = 0;
+     */
+    UNSET = 0,
+    /**
+     * @generated from protobuf enum value: PIPELINE_STEP_NOTIFY_DATA_TYPE_PAYLOAD = 1;
+     */
+    PAYLOAD = 1,
+    /**
+     * @generated from protobuf enum value: PIPELINE_STEP_NOTIFY_DATA_TYPE_PATHS = 2;
+     */
+    PATHS = 2
+}
 // @generated message type with reflection information, may provide speed optimized methods
 class Pipeline$Type extends MessageType<Pipeline> {
     constructor() {
@@ -299,7 +338,8 @@ class PipelineStepConditions$Type extends MessageType<PipelineStepConditions> {
         super("protos.PipelineStepConditions", [
             { no: 1, name: "abort", kind: "enum", T: () => ["protos.AbortCondition", AbortCondition, "ABORT_CONDITION_"] },
             { no: 2, name: "notify", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 3, name: "metadata", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
+            { no: 3, name: "metadata", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
+            { no: 4, name: "notify_data", kind: "message", T: () => PipelineStepNotifyData }
         ]);
     }
     create(value?: PartialMessage<PipelineStepConditions>): PipelineStepConditions {
@@ -317,11 +357,14 @@ class PipelineStepConditions$Type extends MessageType<PipelineStepConditions> {
                 case /* protos.AbortCondition abort */ 1:
                     message.abort = reader.int32();
                     break;
-                case /* bool notify */ 2:
+                case /* bool notify = 2 [deprecated = true];*/ 2:
                     message.notify = reader.bool();
                     break;
                 case /* map<string, string> metadata */ 3:
                     this.binaryReadMap3(message.metadata, reader, options);
+                    break;
+                case /* protos.PipelineStepNotifyData notify_data */ 4:
+                    message.notifyData = PipelineStepNotifyData.internalBinaryRead(reader, reader.uint32(), options, message.notifyData);
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -354,12 +397,15 @@ class PipelineStepConditions$Type extends MessageType<PipelineStepConditions> {
         /* protos.AbortCondition abort = 1; */
         if (message.abort !== 0)
             writer.tag(1, WireType.Varint).int32(message.abort);
-        /* bool notify = 2; */
+        /* bool notify = 2 [deprecated = true]; */
         if (message.notify !== false)
             writer.tag(2, WireType.Varint).bool(message.notify);
         /* map<string, string> metadata = 3; */
         for (let k of Object.keys(message.metadata))
             writer.tag(3, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.metadata[k]).join();
+        /* protos.PipelineStepNotifyData notify_data = 4; */
+        if (message.notifyData)
+            PipelineStepNotifyData.internalBinaryWrite(message.notifyData, writer.tag(4, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -370,6 +416,60 @@ class PipelineStepConditions$Type extends MessageType<PipelineStepConditions> {
  * @generated MessageType for protobuf message protos.PipelineStepConditions
  */
 export const PipelineStepConditions = new PipelineStepConditions$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class PipelineStepNotifyData$Type extends MessageType<PipelineStepNotifyData> {
+    constructor() {
+        super("protos.PipelineStepNotifyData", [
+            { no: 1, name: "type", kind: "enum", T: () => ["protos.PipelineStepNotifyDataType", PipelineStepNotifyDataType, "PIPELINE_STEP_NOTIFY_DATA_TYPE_"] },
+            { no: 2, name: "paths", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<PipelineStepNotifyData>): PipelineStepNotifyData {
+        const message = { type: 0, paths: [] };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<PipelineStepNotifyData>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: PipelineStepNotifyData): PipelineStepNotifyData {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* protos.PipelineStepNotifyDataType type */ 1:
+                    message.type = reader.int32();
+                    break;
+                case /* repeated string paths */ 2:
+                    message.paths.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: PipelineStepNotifyData, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* protos.PipelineStepNotifyDataType type = 1; */
+        if (message.type !== 0)
+            writer.tag(1, WireType.Varint).int32(message.type);
+        /* repeated string paths = 2; */
+        for (let i = 0; i < message.paths.length; i++)
+            writer.tag(2, WireType.LengthDelimited).string(message.paths[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message protos.PipelineStepNotifyData
+ */
+export const PipelineStepNotifyData = new PipelineStepNotifyData$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class PipelineStep$Type extends MessageType<PipelineStep> {
     constructor() {

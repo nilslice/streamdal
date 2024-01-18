@@ -224,11 +224,14 @@ pub struct PipelineStepConditions {
     // @@protoc_insertion_point(field:protos.PipelineStepConditions.abort)
     pub abort: ::protobuf::EnumOrUnknown<AbortCondition>,
     ///  Should we trigger a notification?
+    ///  This is deprecated and you should use notify_data field instead
     // @@protoc_insertion_point(field:protos.PipelineStepConditions.notify)
     pub notify: bool,
     ///  Should we include additional metadata that SDK should pass back to user?
     // @@protoc_insertion_point(field:protos.PipelineStepConditions.metadata)
     pub metadata: ::std::collections::HashMap<::std::string::String, ::std::string::String>,
+    // @@protoc_insertion_point(field:protos.PipelineStepConditions.notify_data)
+    pub notify_data: ::protobuf::MessageField<PipelineStepNotifyData>,
     // special fields
     // @@protoc_insertion_point(special_field:protos.PipelineStepConditions.special_fields)
     pub special_fields: ::protobuf::SpecialFields,
@@ -246,7 +249,7 @@ impl PipelineStepConditions {
     }
 
     fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
-        let mut fields = ::std::vec::Vec::with_capacity(3);
+        let mut fields = ::std::vec::Vec::with_capacity(4);
         let mut oneofs = ::std::vec::Vec::with_capacity(0);
         fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
             "abort",
@@ -262,6 +265,11 @@ impl PipelineStepConditions {
             "metadata",
             |m: &PipelineStepConditions| { &m.metadata },
             |m: &mut PipelineStepConditions| { &mut m.metadata },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, PipelineStepNotifyData>(
+            "notify_data",
+            |m: &PipelineStepConditions| { &m.notify_data },
+            |m: &mut PipelineStepConditions| { &mut m.notify_data },
         ));
         ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<PipelineStepConditions>(
             "PipelineStepConditions",
@@ -302,6 +310,9 @@ impl ::protobuf::Message for PipelineStepConditions {
                     is.pop_limit(old_limit);
                     self.metadata.insert(key, value);
                 },
+                34 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.notify_data)?;
+                },
                 tag => {
                     ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
                 },
@@ -326,6 +337,10 @@ impl ::protobuf::Message for PipelineStepConditions {
             entry_size += ::protobuf::rt::string_size(2, &v);
             my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(entry_size) + entry_size
         };
+        if let Some(v) = self.notify_data.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
         self.special_fields.cached_size().set(my_size as u32);
         my_size
@@ -347,6 +362,9 @@ impl ::protobuf::Message for PipelineStepConditions {
             os.write_string(1, &k)?;
             os.write_string(2, &v)?;
         };
+        if let Some(v) = self.notify_data.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(4, v, os)?;
+        }
         os.write_unknown_fields(self.special_fields.unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -367,6 +385,7 @@ impl ::protobuf::Message for PipelineStepConditions {
         self.abort = ::protobuf::EnumOrUnknown::new(AbortCondition::ABORT_CONDITION_UNSET);
         self.notify = false;
         self.metadata.clear();
+        self.notify_data.clear();
         self.special_fields.clear();
     }
 
@@ -390,6 +409,148 @@ impl ::std::fmt::Display for PipelineStepConditions {
 }
 
 impl ::protobuf::reflect::ProtobufValue for PipelineStepConditions {
+    type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
+}
+
+// @@protoc_insertion_point(message:protos.PipelineStepNotifyData)
+#[derive(PartialEq,Clone,Default,Debug)]
+pub struct PipelineStepNotifyData {
+    // message fields
+    // @@protoc_insertion_point(field:protos.PipelineStepNotifyData.type)
+    pub type_: ::protobuf::EnumOrUnknown<PipelineStepNotifyDataType>,
+    ///  JSON paths to be included in the notification
+    ///  If type is PAYLOAD, this is ignored
+    // @@protoc_insertion_point(field:protos.PipelineStepNotifyData.paths)
+    pub paths: ::std::vec::Vec<::std::string::String>,
+    // special fields
+    // @@protoc_insertion_point(special_field:protos.PipelineStepNotifyData.special_fields)
+    pub special_fields: ::protobuf::SpecialFields,
+}
+
+impl<'a> ::std::default::Default for &'a PipelineStepNotifyData {
+    fn default() -> &'a PipelineStepNotifyData {
+        <PipelineStepNotifyData as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl PipelineStepNotifyData {
+    pub fn new() -> PipelineStepNotifyData {
+        ::std::default::Default::default()
+    }
+
+    fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
+        let mut fields = ::std::vec::Vec::with_capacity(2);
+        let mut oneofs = ::std::vec::Vec::with_capacity(0);
+        fields.push(::protobuf::reflect::rt::v2::make_simpler_field_accessor::<_, _>(
+            "type",
+            |m: &PipelineStepNotifyData| { &m.type_ },
+            |m: &mut PipelineStepNotifyData| { &mut m.type_ },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
+            "paths",
+            |m: &PipelineStepNotifyData| { &m.paths },
+            |m: &mut PipelineStepNotifyData| { &mut m.paths },
+        ));
+        ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<PipelineStepNotifyData>(
+            "PipelineStepNotifyData",
+            fields,
+            oneofs,
+        )
+    }
+}
+
+impl ::protobuf::Message for PipelineStepNotifyData {
+    const NAME: &'static str = "PipelineStepNotifyData";
+
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
+        while let Some(tag) = is.read_raw_tag_or_eof()? {
+            match tag {
+                8 => {
+                    self.type_ = is.read_enum_or_unknown()?;
+                },
+                18 => {
+                    self.paths.push(is.read_string()?);
+                },
+                tag => {
+                    ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u64 {
+        let mut my_size = 0;
+        if self.type_ != ::protobuf::EnumOrUnknown::new(PipelineStepNotifyDataType::PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET) {
+            my_size += ::protobuf::rt::int32_size(1, self.type_.value());
+        }
+        for value in &self.paths {
+            my_size += ::protobuf::rt::string_size(2, &value);
+        };
+        my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
+        self.special_fields.cached_size().set(my_size as u32);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
+        if self.type_ != ::protobuf::EnumOrUnknown::new(PipelineStepNotifyDataType::PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET) {
+            os.write_enum(1, ::protobuf::EnumOrUnknown::value(&self.type_))?;
+        }
+        for v in &self.paths {
+            os.write_string(2, &v)?;
+        };
+        os.write_unknown_fields(self.special_fields.unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn special_fields(&self) -> &::protobuf::SpecialFields {
+        &self.special_fields
+    }
+
+    fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
+        &mut self.special_fields
+    }
+
+    fn new() -> PipelineStepNotifyData {
+        PipelineStepNotifyData::new()
+    }
+
+    fn clear(&mut self) {
+        self.type_ = ::protobuf::EnumOrUnknown::new(PipelineStepNotifyDataType::PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET);
+        self.paths.clear();
+        self.special_fields.clear();
+    }
+
+    fn default_instance() -> &'static PipelineStepNotifyData {
+        static instance: PipelineStepNotifyData = PipelineStepNotifyData {
+            type_: ::protobuf::EnumOrUnknown::from_i32(0),
+            paths: ::std::vec::Vec::new(),
+            special_fields: ::protobuf::SpecialFields::new(),
+        };
+        &instance
+    }
+}
+
+impl ::protobuf::MessageFull for PipelineStepNotifyData {
+    fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().message_by_package_relative_name("PipelineStepNotifyData").unwrap()).clone()
+    }
+}
+
+impl ::std::fmt::Display for PipelineStepNotifyData {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for PipelineStepNotifyData {
     type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
 }
 
@@ -1448,6 +1609,73 @@ impl AbortCondition {
     }
 }
 
+#[derive(Clone,Copy,PartialEq,Eq,Debug,Hash)]
+// @@protoc_insertion_point(enum:protos.PipelineStepNotifyDataType)
+pub enum PipelineStepNotifyDataType {
+    // @@protoc_insertion_point(enum_value:protos.PipelineStepNotifyDataType.PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET)
+    PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET = 0,
+    // @@protoc_insertion_point(enum_value:protos.PipelineStepNotifyDataType.PIPELINE_STEP_NOTIFY_DATA_TYPE_PAYLOAD)
+    PIPELINE_STEP_NOTIFY_DATA_TYPE_PAYLOAD = 1,
+    // @@protoc_insertion_point(enum_value:protos.PipelineStepNotifyDataType.PIPELINE_STEP_NOTIFY_DATA_TYPE_PATHS)
+    PIPELINE_STEP_NOTIFY_DATA_TYPE_PATHS = 2,
+}
+
+impl ::protobuf::Enum for PipelineStepNotifyDataType {
+    const NAME: &'static str = "PipelineStepNotifyDataType";
+
+    fn value(&self) -> i32 {
+        *self as i32
+    }
+
+    fn from_i32(value: i32) -> ::std::option::Option<PipelineStepNotifyDataType> {
+        match value {
+            0 => ::std::option::Option::Some(PipelineStepNotifyDataType::PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET),
+            1 => ::std::option::Option::Some(PipelineStepNotifyDataType::PIPELINE_STEP_NOTIFY_DATA_TYPE_PAYLOAD),
+            2 => ::std::option::Option::Some(PipelineStepNotifyDataType::PIPELINE_STEP_NOTIFY_DATA_TYPE_PATHS),
+            _ => ::std::option::Option::None
+        }
+    }
+
+    fn from_str(str: &str) -> ::std::option::Option<PipelineStepNotifyDataType> {
+        match str {
+            "PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET" => ::std::option::Option::Some(PipelineStepNotifyDataType::PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET),
+            "PIPELINE_STEP_NOTIFY_DATA_TYPE_PAYLOAD" => ::std::option::Option::Some(PipelineStepNotifyDataType::PIPELINE_STEP_NOTIFY_DATA_TYPE_PAYLOAD),
+            "PIPELINE_STEP_NOTIFY_DATA_TYPE_PATHS" => ::std::option::Option::Some(PipelineStepNotifyDataType::PIPELINE_STEP_NOTIFY_DATA_TYPE_PATHS),
+            _ => ::std::option::Option::None
+        }
+    }
+
+    const VALUES: &'static [PipelineStepNotifyDataType] = &[
+        PipelineStepNotifyDataType::PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET,
+        PipelineStepNotifyDataType::PIPELINE_STEP_NOTIFY_DATA_TYPE_PAYLOAD,
+        PipelineStepNotifyDataType::PIPELINE_STEP_NOTIFY_DATA_TYPE_PATHS,
+    ];
+}
+
+impl ::protobuf::EnumFull for PipelineStepNotifyDataType {
+    fn enum_descriptor() -> ::protobuf::reflect::EnumDescriptor {
+        static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::EnumDescriptor> = ::protobuf::rt::Lazy::new();
+        descriptor.get(|| file_descriptor().enum_by_package_relative_name("PipelineStepNotifyDataType").unwrap()).clone()
+    }
+
+    fn descriptor(&self) -> ::protobuf::reflect::EnumValueDescriptor {
+        let index = *self as usize;
+        Self::enum_descriptor().value_by_index(index)
+    }
+}
+
+impl ::std::default::Default for PipelineStepNotifyDataType {
+    fn default() -> Self {
+        PipelineStepNotifyDataType::PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET
+    }
+}
+
+impl PipelineStepNotifyDataType {
+    fn generated_enum_descriptor_data() -> ::protobuf::reflect::GeneratedEnumDescriptorData {
+        ::protobuf::reflect::GeneratedEnumDescriptorData::new::<PipelineStepNotifyDataType>("PipelineStepNotifyDataType")
+    }
+}
+
 static file_descriptor_proto_data: &'static [u8] = b"\
     \n\x11sp_pipeline.proto\x12\x06protos\x1a\x0fsp_notify.proto\x1a\x1bstep\
     s/sp_steps_custom.proto\x1a\x1bsteps/sp_steps_decode.proto\x1a\x1esteps/\
@@ -1459,159 +1687,186 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x12\x12\n\x04name\x18\x02\x20\x01(\tR\x04name\x12*\n\x05steps\x18\x03\
     \x20\x03(\x0b2\x14.protos.PipelineStepR\x05steps\x12N\n\x15_notification\
     _configs\x18\x04\x20\x03(\x0b2\x1a.protos.NotificationConfigR\x13Notific\
-    ationConfigs\"\xe5\x01\n\x16PipelineStepConditions\x12,\n\x05abort\x18\
-    \x01\x20\x01(\x0e2\x16.protos.AbortConditionR\x05abort\x12\x16\n\x06noti\
-    fy\x18\x02\x20\x01(\x08R\x06notify\x12H\n\x08metadata\x18\x03\x20\x03(\
-    \x0b2,.protos.PipelineStepConditions.MetadataEntryR\x08metadata\x1a;\n\r\
-    MetadataEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03key\x12\x14\n\x05v\
-    alue\x18\x02\x20\x01(\tR\x05value:\x028\x01\"\x80\x08\n\x0cPipelineStep\
-    \x12\x12\n\x04name\x18\x01\x20\x01(\tR\x04name\x12=\n\non_success\x18\
-    \x02\x20\x01(\x0b2\x1e.protos.PipelineStepConditionsR\tonSuccess\x12=\n\
-    \non_failure\x18\x03\x20\x01(\x0b2\x1e.protos.PipelineStepConditionsR\to\
-    nFailure\x12\x18\n\x07dynamic\x18\x04\x20\x01(\x08R\x07dynamic\x129\n\
-    \x08on_error\x18\x05\x20\x01(\x0b2\x1e.protos.PipelineStepConditionsR\
-    \x07onError\x12<\n\tdetective\x18\xe8\x07\x20\x01(\x0b2\x1b.protos.steps\
-    .DetectiveStepH\0R\tdetective\x12<\n\ttransform\x18\xe9\x07\x20\x01(\x0b\
-    2\x1b.protos.steps.TransformStepH\0R\ttransform\x123\n\x06encode\x18\xea\
-    \x07\x20\x01(\x0b2\x18.protos.steps.EncodeStepH\0R\x06encode\x123\n\x06d\
-    ecode\x18\xeb\x07\x20\x01(\x0b2\x18.protos.steps.DecodeStepH\0R\x06decod\
-    e\x123\n\x06custom\x18\xec\x07\x20\x01(\x0b2\x18.protos.steps.CustomStep\
-    H\0R\x06custom\x12C\n\x0chttp_request\x18\xed\x07\x20\x01(\x0b2\x1d.prot\
-    os.steps.HttpRequestStepH\0R\x0bhttpRequest\x12'\n\x02kv\x18\xee\x07\x20\
-    \x01(\x0b2\x14.protos.steps.KVStepH\0R\x02kv\x12C\n\x0cinfer_schema\x18\
-    \xef\x07\x20\x01(\x0b2\x1d.protos.steps.InferSchemaStepH\0R\x0binferSche\
-    ma\x12=\n\nvalid_json\x18\xf0\x07\x20\x01(\x0b2\x1b.protos.steps.ValidJS\
-    ONStepH\0R\tvalidJson\x12R\n\x11schema_validation\x18\xf1\x07\x20\x01(\
-    \x0b2\".protos.steps.SchemaValidationStepH\0R\x10schemaValidation\x12\
-    \x1e\n\x08_wasm_id\x18\x90N\x20\x01(\tH\x01R\x06WasmId\x88\x01\x01\x12$\
-    \n\x0b_wasm_bytes\x18\x91N\x20\x01(\x0cH\x02R\tWasmBytes\x88\x01\x01\x12\
-    *\n\x0e_wasm_function\x18\x92N\x20\x01(\tH\x03R\x0cWasmFunction\x88\x01\
-    \x01B\x06\n\x04stepB\x0b\n\tX_wasm_idB\x0e\n\x0cX_wasm_bytesB\x11\n\x0fX\
-    _wasm_function*m\n\x0eAbortCondition\x12\x19\n\x15ABORT_CONDITION_UNSET\
-    \x10\0\x12!\n\x1dABORT_CONDITION_ABORT_CURRENT\x10\x01\x12\x1d\n\x19ABOR\
-    T_CONDITION_ABORT_ALL\x10\x02B<Z:github.com/streamdal/streamdal/libs/pro\
-    tos/build/go/protosJ\xba\x1b\n\x06\x12\x04\0\0`\x01\n\x08\n\x01\x0c\x12\
-    \x03\0\0\x12\n\x08\n\x01\x02\x12\x03\x02\0\x0f\n\t\n\x02\x03\0\x12\x03\
-    \x04\0\x19\n\t\n\x02\x03\x01\x12\x03\x05\0%\n\t\n\x02\x03\x02\x12\x03\
-    \x06\0%\n\t\n\x02\x03\x03\x12\x03\x07\0(\n\t\n\x02\x03\x04\x12\x03\x08\0\
-    %\n\t\n\x02\x03\x05\x12\x03\t\0*\n\t\n\x02\x03\x06\x12\x03\n\0*\n\t\n\
-    \x02\x03\x07\x12\x03\x0b\0!\n\t\n\x02\x03\x08\x12\x03\x0c\00\n\t\n\x02\
-    \x03\t\x12\x03\r\0(\n\t\n\x02\x03\n\x12\x03\x0e\0)\n\x08\n\x01\x08\x12\
-    \x03\x10\0Q\n\t\n\x02\x08\x0b\x12\x03\x10\0Q\n\xc8\x01\n\x02\x04\0\x12\
-    \x04\x15\0#\x01\x1a\xbb\x01\x20Pipeline\x20is\x20a\x20structure\x20that\
-    \x20holds\x20one\x20or\x20more\x20pipeline\x20steps.\x20This\x20structur\
-    e\n\x20is\x20intended\x20to\x20be\x20immutable;\x20clients\x20are\x20exp\
-    ected\x20to\x20generate\x20WASMRequest's\n\x20that\x20contain\x20a\x20pi\
-    peline\x20step.\n\n\n\n\x03\x04\0\x01\x12\x03\x15\x08\x10\n\x9f\x01\n\
-    \x04\x04\0\x02\0\x12\x03\x18\x02\x10\x1a\x91\x01\x20ID\x20should\x20NOT\
-    \x20be\x20set\x20by\x20external\x20gRPC\x20client\x20on\x20CreatePipelin\
-    eRequest\x20-\x20it\n\x20will\x20be\x20ignored;\x20it\x20_does_\x20need\
-    \x20to\x20be\x20set\x20on\x20UpdatePipelineRequest.\n\n\x0c\n\x05\x04\0\
-    \x02\0\x05\x12\x03\x18\x02\x08\n\x0c\n\x05\x04\0\x02\0\x01\x12\x03\x18\t\
-    \x0b\n\x0c\n\x05\x04\0\x02\0\x03\x12\x03\x18\x0e\x0f\n-\n\x04\x04\0\x02\
-    \x01\x12\x03\x1b\x02\x12\x1a\x20\x20Friendly\x20name\x20for\x20the\x20pi\
-    peline\n\n\x0c\n\x05\x04\0\x02\x01\x05\x12\x03\x1b\x02\x08\n\x0c\n\x05\
-    \x04\0\x02\x01\x01\x12\x03\x1b\t\r\n\x0c\n\x05\x04\0\x02\x01\x03\x12\x03\
-    \x1b\x10\x11\n+\n\x04\x04\0\x02\x02\x12\x03\x1e\x02\"\x1a\x1e\x20One\x20\
-    or\x20more\x20steps\x20to\x20execute\n\n\x0c\n\x05\x04\0\x02\x02\x04\x12\
-    \x03\x1e\x02\n\n\x0c\n\x05\x04\0\x02\x02\x06\x12\x03\x1e\x0b\x17\n\x0c\n\
-    \x05\x04\0\x02\x02\x01\x12\x03\x1e\x18\x1d\n\x0c\n\x05\x04\0\x02\x02\x03\
-    \x12\x03\x1e\x20!\n\x98\x01\n\x04\x04\0\x02\x03\x12\x03\"\x02?\x1aT\x20N\
-    otification\x20configs\x20for\x20this\x20pipeline.\x20Only\x20filled\x20\
-    out\n\x20in\x20external\x20API\x20responses\n\"5\x20protolint:disable:th\
-    is\x20FIELD_NAMES_LOWER_SNAKE_CASE\n\n\x0c\n\x05\x04\0\x02\x03\x04\x12\
-    \x03\"\x02\n\n\x0c\n\x05\x04\0\x02\x03\x06\x12\x03\"\x0b$\n\x0c\n\x05\
-    \x04\0\x02\x03\x01\x12\x03\"%:\n\x0c\n\x05\x04\0\x02\x03\x03\x12\x03\"=>\
-    \n\n\n\x02\x05\0\x12\x04%\0)\x01\n\n\n\x03\x05\0\x01\x12\x03%\x05\x13\n\
-    \x0b\n\x04\x05\0\x02\0\x12\x03&\x02\x1c\n\x0c\n\x05\x05\0\x02\0\x01\x12\
-    \x03&\x02\x17\n\x0c\n\x05\x05\0\x02\0\x02\x12\x03&\x1a\x1b\n\x0b\n\x04\
-    \x05\0\x02\x01\x12\x03'\x02$\n\x0c\n\x05\x05\0\x02\x01\x01\x12\x03'\x02\
-    \x1f\n\x0c\n\x05\x05\0\x02\x01\x02\x12\x03'\"#\n\x0b\n\x04\x05\0\x02\x02\
-    \x12\x03(\x02\x20\n\x0c\n\x05\x05\0\x02\x02\x01\x12\x03(\x02\x1b\n\x0c\n\
-    \x05\x05\0\x02\x02\x02\x12\x03(\x1e\x1f\n\x82\x02\n\x02\x04\x01\x12\x04/\
-    \08\x01\x1a\xf5\x01\x20Conditions\x20define\x20how\x20the\x20SDK\x20shou\
-    ld\x20handle\x20a\x20Wasm\x20response\x20in\x20a\x20step.\n\x20Should\
-    \x20it\x20continue\x20executing\x20the\x20pipeline,\x20should\x20it\x20a\
-    bort,\x20should\x20it\x20notify\n\x20the\x20server?\x20Each\x20step\x20c\
-    an\x20have\x20exactly\x20one\x20of\x20these\x20for\x20on_success,\x20on_\
-    failure\n\x20and\x20on_error.\n\n\n\n\x03\x04\x01\x01\x12\x03/\x08\x1e\n\
-    )\n\x04\x04\x01\x02\0\x12\x031\x02\x1b\x1a\x1c\x20Should\x20we\x20abort\
-    \x20execution?\n\n\x0c\n\x05\x04\x01\x02\0\x06\x12\x031\x02\x10\n\x0c\n\
-    \x05\x04\x01\x02\0\x01\x12\x031\x11\x16\n\x0c\n\x05\x04\x01\x02\0\x03\
-    \x12\x031\x19\x1a\n0\n\x04\x04\x01\x02\x01\x12\x034\x02\x12\x1a#\x20Shou\
-    ld\x20we\x20trigger\x20a\x20notification?\n\n\x0c\n\x05\x04\x01\x02\x01\
-    \x05\x12\x034\x02\x06\n\x0c\n\x05\x04\x01\x02\x01\x01\x12\x034\x07\r\n\
-    \x0c\n\x05\x04\x01\x02\x01\x03\x12\x034\x10\x11\nW\n\x04\x04\x01\x02\x02\
-    \x12\x037\x02#\x1aJ\x20Should\x20we\x20include\x20additional\x20metadata\
-    \x20that\x20SDK\x20should\x20pass\x20back\x20to\x20user?\n\n\x0c\n\x05\
-    \x04\x01\x02\x02\x06\x12\x037\x02\x15\n\x0c\n\x05\x04\x01\x02\x02\x01\
-    \x12\x037\x16\x1e\n\x0c\n\x05\x04\x01\x02\x02\x03\x12\x037!\"\n=\n\x02\
-    \x04\x02\x12\x04;\0`\x01\x1a1\x20A\x20pipeline\x20step\x20is\x20a\x20sin\
-    gle\x20step\x20in\x20a\x20pipeline.\n\n\n\n\x03\x04\x02\x01\x12\x03;\x08\
-    \x14\n)\n\x04\x04\x02\x02\0\x12\x03=\x02\x12\x1a\x1c\x20Friendly\x20name\
-    \x20for\x20the\x20step\n\n\x0c\n\x05\x04\x02\x02\0\x05\x12\x03=\x02\x08\
-    \n\x0c\n\x05\x04\x02\x02\0\x01\x12\x03=\t\r\n\x0c\n\x05\x04\x02\x02\0\
-    \x03\x12\x03=\x10\x11\n[\n\x04\x04\x02\x02\x01\x12\x03@\x02(\x1aN\x20SDK\
-    s\x20should\x20read\x20this\x20when\x20WASM\x20returns\x20success\x20to\
-    \x20determine\x20what\x20to\x20do\x20next\n\n\x0c\n\x05\x04\x02\x02\x01\
-    \x06\x12\x03@\x02\x18\n\x0c\n\x05\x04\x02\x02\x01\x01\x12\x03@\x19#\n\
-    \x0c\n\x05\x04\x02\x02\x01\x03\x12\x03@&'\n[\n\x04\x04\x02\x02\x02\x12\
-    \x03C\x02(\x1aN\x20SDKs\x20should\x20read\x20this\x20when\x20WASM\x20ret\
-    urns\x20failure\x20to\x20determine\x20what\x20to\x20do\x20next\n\n\x0c\n\
-    \x05\x04\x02\x02\x02\x06\x12\x03C\x02\x18\n\x0c\n\x05\x04\x02\x02\x02\
-    \x01\x12\x03C\x19#\n\x0c\n\x05\x04\x02\x02\x02\x03\x12\x03C&'\n^\n\x04\
-    \x04\x02\x02\x03\x12\x03F\x02\x13\x1aQ\x20Indicates\x20whether\x20to\x20\
-    use\x20the\x20results\x20from\x20a\x20previous\x20step\x20as\x20input\
-    \x20to\x20this\x20step\n\n\x0c\n\x05\x04\x02\x02\x03\x05\x12\x03F\x02\
-    \x06\n\x0c\n\x05\x04\x02\x02\x03\x01\x12\x03F\x07\x0e\n\x0c\n\x05\x04\
-    \x02\x02\x03\x03\x12\x03F\x11\x12\nY\n\x04\x04\x02\x02\x04\x12\x03I\x02&\
+    ationConfigs\"\xaa\x02\n\x16PipelineStepConditions\x12,\n\x05abort\x18\
+    \x01\x20\x01(\x0e2\x16.protos.AbortConditionR\x05abort\x12\x1a\n\x06noti\
+    fy\x18\x02\x20\x01(\x08R\x06notifyB\x02\x18\x01\x12H\n\x08metadata\x18\
+    \x03\x20\x03(\x0b2,.protos.PipelineStepConditions.MetadataEntryR\x08meta\
+    data\x12?\n\x0bnotify_data\x18\x04\x20\x01(\x0b2\x1e.protos.PipelineStep\
+    NotifyDataR\nnotifyData\x1a;\n\rMetadataEntry\x12\x10\n\x03key\x18\x01\
+    \x20\x01(\tR\x03key\x12\x14\n\x05value\x18\x02\x20\x01(\tR\x05value:\x02\
+    8\x01\"f\n\x16PipelineStepNotifyData\x126\n\x04type\x18\x01\x20\x01(\x0e\
+    2\".protos.PipelineStepNotifyDataTypeR\x04type\x12\x14\n\x05paths\x18\
+    \x02\x20\x03(\tR\x05paths\"\x80\x08\n\x0cPipelineStep\x12\x12\n\x04name\
+    \x18\x01\x20\x01(\tR\x04name\x12=\n\non_success\x18\x02\x20\x01(\x0b2\
+    \x1e.protos.PipelineStepConditionsR\tonSuccess\x12=\n\non_failure\x18\
+    \x03\x20\x01(\x0b2\x1e.protos.PipelineStepConditionsR\tonFailure\x12\x18\
+    \n\x07dynamic\x18\x04\x20\x01(\x08R\x07dynamic\x129\n\x08on_error\x18\
+    \x05\x20\x01(\x0b2\x1e.protos.PipelineStepConditionsR\x07onError\x12<\n\
+    \tdetective\x18\xe8\x07\x20\x01(\x0b2\x1b.protos.steps.DetectiveStepH\0R\
+    \tdetective\x12<\n\ttransform\x18\xe9\x07\x20\x01(\x0b2\x1b.protos.steps\
+    .TransformStepH\0R\ttransform\x123\n\x06encode\x18\xea\x07\x20\x01(\x0b2\
+    \x18.protos.steps.EncodeStepH\0R\x06encode\x123\n\x06decode\x18\xeb\x07\
+    \x20\x01(\x0b2\x18.protos.steps.DecodeStepH\0R\x06decode\x123\n\x06custo\
+    m\x18\xec\x07\x20\x01(\x0b2\x18.protos.steps.CustomStepH\0R\x06custom\
+    \x12C\n\x0chttp_request\x18\xed\x07\x20\x01(\x0b2\x1d.protos.steps.HttpR\
+    equestStepH\0R\x0bhttpRequest\x12'\n\x02kv\x18\xee\x07\x20\x01(\x0b2\x14\
+    .protos.steps.KVStepH\0R\x02kv\x12C\n\x0cinfer_schema\x18\xef\x07\x20\
+    \x01(\x0b2\x1d.protos.steps.InferSchemaStepH\0R\x0binferSchema\x12=\n\nv\
+    alid_json\x18\xf0\x07\x20\x01(\x0b2\x1b.protos.steps.ValidJSONStepH\0R\t\
+    validJson\x12R\n\x11schema_validation\x18\xf1\x07\x20\x01(\x0b2\".protos\
+    .steps.SchemaValidationStepH\0R\x10schemaValidation\x12\x1e\n\x08_wasm_i\
+    d\x18\x90N\x20\x01(\tH\x01R\x06WasmId\x88\x01\x01\x12$\n\x0b_wasm_bytes\
+    \x18\x91N\x20\x01(\x0cH\x02R\tWasmBytes\x88\x01\x01\x12*\n\x0e_wasm_func\
+    tion\x18\x92N\x20\x01(\tH\x03R\x0cWasmFunction\x88\x01\x01B\x06\n\x04ste\
+    pB\x0b\n\tX_wasm_idB\x0e\n\x0cX_wasm_bytesB\x11\n\x0fX_wasm_function*m\n\
+    \x0eAbortCondition\x12\x19\n\x15ABORT_CONDITION_UNSET\x10\0\x12!\n\x1dAB\
+    ORT_CONDITION_ABORT_CURRENT\x10\x01\x12\x1d\n\x19ABORT_CONDITION_ABORT_A\
+    LL\x10\x02*\x9c\x01\n\x1aPipelineStepNotifyDataType\x12(\n$PIPELINE_STEP\
+    _NOTIFY_DATA_TYPE_UNSET\x10\0\x12*\n&PIPELINE_STEP_NOTIFY_DATA_TYPE_PAYL\
+    OAD\x10\x01\x12(\n$PIPELINE_STEP_NOTIFY_DATA_TYPE_PATHS\x10\x02B<Z:githu\
+    b.com/streamdal/streamdal/libs/protos/build/go/protosJ\xcc\x1f\n\x06\x12\
+    \x04\0\0q\x01\n\x08\n\x01\x0c\x12\x03\0\0\x12\n\x08\n\x01\x02\x12\x03\
+    \x02\0\x0f\n\t\n\x02\x03\0\x12\x03\x04\0\x19\n\t\n\x02\x03\x01\x12\x03\
+    \x05\0%\n\t\n\x02\x03\x02\x12\x03\x06\0%\n\t\n\x02\x03\x03\x12\x03\x07\0\
+    (\n\t\n\x02\x03\x04\x12\x03\x08\0%\n\t\n\x02\x03\x05\x12\x03\t\0*\n\t\n\
+    \x02\x03\x06\x12\x03\n\0*\n\t\n\x02\x03\x07\x12\x03\x0b\0!\n\t\n\x02\x03\
+    \x08\x12\x03\x0c\00\n\t\n\x02\x03\t\x12\x03\r\0(\n\t\n\x02\x03\n\x12\x03\
+    \x0e\0)\n\x08\n\x01\x08\x12\x03\x10\0Q\n\t\n\x02\x08\x0b\x12\x03\x10\0Q\
+    \n\xc8\x01\n\x02\x04\0\x12\x04\x15\0#\x01\x1a\xbb\x01\x20Pipeline\x20is\
+    \x20a\x20structure\x20that\x20holds\x20one\x20or\x20more\x20pipeline\x20\
+    steps.\x20This\x20structure\n\x20is\x20intended\x20to\x20be\x20immutable\
+    ;\x20clients\x20are\x20expected\x20to\x20generate\x20WASMRequest's\n\x20\
+    that\x20contain\x20a\x20pipeline\x20step.\n\n\n\n\x03\x04\0\x01\x12\x03\
+    \x15\x08\x10\n\x9f\x01\n\x04\x04\0\x02\0\x12\x03\x18\x02\x10\x1a\x91\x01\
+    \x20ID\x20should\x20NOT\x20be\x20set\x20by\x20external\x20gRPC\x20client\
+    \x20on\x20CreatePipelineRequest\x20-\x20it\n\x20will\x20be\x20ignored;\
+    \x20it\x20_does_\x20need\x20to\x20be\x20set\x20on\x20UpdatePipelineReque\
+    st.\n\n\x0c\n\x05\x04\0\x02\0\x05\x12\x03\x18\x02\x08\n\x0c\n\x05\x04\0\
+    \x02\0\x01\x12\x03\x18\t\x0b\n\x0c\n\x05\x04\0\x02\0\x03\x12\x03\x18\x0e\
+    \x0f\n-\n\x04\x04\0\x02\x01\x12\x03\x1b\x02\x12\x1a\x20\x20Friendly\x20n\
+    ame\x20for\x20the\x20pipeline\n\n\x0c\n\x05\x04\0\x02\x01\x05\x12\x03\
+    \x1b\x02\x08\n\x0c\n\x05\x04\0\x02\x01\x01\x12\x03\x1b\t\r\n\x0c\n\x05\
+    \x04\0\x02\x01\x03\x12\x03\x1b\x10\x11\n+\n\x04\x04\0\x02\x02\x12\x03\
+    \x1e\x02\"\x1a\x1e\x20One\x20or\x20more\x20steps\x20to\x20execute\n\n\
+    \x0c\n\x05\x04\0\x02\x02\x04\x12\x03\x1e\x02\n\n\x0c\n\x05\x04\0\x02\x02\
+    \x06\x12\x03\x1e\x0b\x17\n\x0c\n\x05\x04\0\x02\x02\x01\x12\x03\x1e\x18\
+    \x1d\n\x0c\n\x05\x04\0\x02\x02\x03\x12\x03\x1e\x20!\n\x98\x01\n\x04\x04\
+    \0\x02\x03\x12\x03\"\x02?\x1aT\x20Notification\x20configs\x20for\x20this\
+    \x20pipeline.\x20Only\x20filled\x20out\n\x20in\x20external\x20API\x20res\
+    ponses\n\"5\x20protolint:disable:this\x20FIELD_NAMES_LOWER_SNAKE_CASE\n\
+    \n\x0c\n\x05\x04\0\x02\x03\x04\x12\x03\"\x02\n\n\x0c\n\x05\x04\0\x02\x03\
+    \x06\x12\x03\"\x0b$\n\x0c\n\x05\x04\0\x02\x03\x01\x12\x03\"%:\n\x0c\n\
+    \x05\x04\0\x02\x03\x03\x12\x03\"=>\n\n\n\x02\x05\0\x12\x04%\0)\x01\n\n\n\
+    \x03\x05\0\x01\x12\x03%\x05\x13\n\x0b\n\x04\x05\0\x02\0\x12\x03&\x02\x1c\
+    \n\x0c\n\x05\x05\0\x02\0\x01\x12\x03&\x02\x17\n\x0c\n\x05\x05\0\x02\0\
+    \x02\x12\x03&\x1a\x1b\n\x0b\n\x04\x05\0\x02\x01\x12\x03'\x02$\n\x0c\n\
+    \x05\x05\0\x02\x01\x01\x12\x03'\x02\x1f\n\x0c\n\x05\x05\0\x02\x01\x02\
+    \x12\x03'\"#\n\x0b\n\x04\x05\0\x02\x02\x12\x03(\x02\x20\n\x0c\n\x05\x05\
+    \0\x02\x02\x01\x12\x03(\x02\x1b\n\x0c\n\x05\x05\0\x02\x02\x02\x12\x03(\
+    \x1e\x1f\n\x82\x02\n\x02\x04\x01\x12\x04/\0;\x01\x1a\xf5\x01\x20Conditio\
+    ns\x20define\x20how\x20the\x20SDK\x20should\x20handle\x20a\x20Wasm\x20re\
+    sponse\x20in\x20a\x20step.\n\x20Should\x20it\x20continue\x20executing\
+    \x20the\x20pipeline,\x20should\x20it\x20abort,\x20should\x20it\x20notify\
+    \n\x20the\x20server?\x20Each\x20step\x20can\x20have\x20exactly\x20one\
+    \x20of\x20these\x20for\x20on_success,\x20on_failure\n\x20and\x20on_error\
+    .\n\n\n\n\x03\x04\x01\x01\x12\x03/\x08\x1e\n)\n\x04\x04\x01\x02\0\x12\
+    \x031\x02\x1b\x1a\x1c\x20Should\x20we\x20abort\x20execution?\n\n\x0c\n\
+    \x05\x04\x01\x02\0\x06\x12\x031\x02\x10\n\x0c\n\x05\x04\x01\x02\0\x01\
+    \x12\x031\x11\x16\n\x0c\n\x05\x04\x01\x02\0\x03\x12\x031\x19\x1a\nq\n\
+    \x04\x04\x01\x02\x01\x12\x035\x02$\x1ad\x20Should\x20we\x20trigger\x20a\
+    \x20notification?\n\x20This\x20is\x20deprecated\x20and\x20you\x20should\
+    \x20use\x20notify_data\x20field\x20instead\n\n\x0c\n\x05\x04\x01\x02\x01\
+    \x05\x12\x035\x02\x06\n\x0c\n\x05\x04\x01\x02\x01\x01\x12\x035\x07\r\n\
+    \x0c\n\x05\x04\x01\x02\x01\x03\x12\x035\x10\x11\n\x0c\n\x05\x04\x01\x02\
+    \x01\x08\x12\x035\x12#\n\r\n\x06\x04\x01\x02\x01\x08\x03\x12\x035\x13\"\
+    \nW\n\x04\x04\x01\x02\x02\x12\x038\x02#\x1aJ\x20Should\x20we\x20include\
+    \x20additional\x20metadata\x20that\x20SDK\x20should\x20pass\x20back\x20t\
+    o\x20user?\n\n\x0c\n\x05\x04\x01\x02\x02\x06\x12\x038\x02\x15\n\x0c\n\
+    \x05\x04\x01\x02\x02\x01\x12\x038\x16\x1e\n\x0c\n\x05\x04\x01\x02\x02\
+    \x03\x12\x038!\"\n\x0b\n\x04\x04\x01\x02\x03\x12\x03:\x02)\n\x0c\n\x05\
+    \x04\x01\x02\x03\x06\x12\x03:\x02\x18\n\x0c\n\x05\x04\x01\x02\x03\x01\
+    \x12\x03:\x19$\n\x0c\n\x05\x04\x01\x02\x03\x03\x12\x03:'(\n\n\n\x02\x05\
+    \x01\x12\x04=\0A\x01\n\n\n\x03\x05\x01\x01\x12\x03=\x05\x1f\n\x0b\n\x04\
+    \x05\x01\x02\0\x12\x03>\x02+\n\x0c\n\x05\x05\x01\x02\0\x01\x12\x03>\x02&\
+    \n\x0c\n\x05\x05\x01\x02\0\x02\x12\x03>)*\n\x0b\n\x04\x05\x01\x02\x01\
+    \x12\x03?\x02-\n\x0c\n\x05\x05\x01\x02\x01\x01\x12\x03?\x02(\n\x0c\n\x05\
+    \x05\x01\x02\x01\x02\x12\x03?+,\n\x0b\n\x04\x05\x01\x02\x02\x12\x03@\x02\
+    +\n\x0c\n\x05\x05\x01\x02\x02\x01\x12\x03@\x02&\n\x0c\n\x05\x05\x01\x02\
+    \x02\x02\x12\x03@)*\n\n\n\x02\x04\x02\x12\x04C\0I\x01\n\n\n\x03\x04\x02\
+    \x01\x12\x03C\x08\x1e\n\x0b\n\x04\x04\x02\x02\0\x12\x03D\x02&\n\x0c\n\
+    \x05\x04\x02\x02\0\x06\x12\x03D\x02\x1c\n\x0c\n\x05\x04\x02\x02\0\x01\
+    \x12\x03D\x1d!\n\x0c\n\x05\x04\x02\x02\0\x03\x12\x03D$%\na\n\x04\x04\x02\
+    \x02\x01\x12\x03H\x02\x1c\x1aT\x20JSON\x20paths\x20to\x20be\x20included\
+    \x20in\x20the\x20notification\n\x20If\x20type\x20is\x20PAYLOAD,\x20this\
+    \x20is\x20ignored\n\n\x0c\n\x05\x04\x02\x02\x01\x04\x12\x03H\x02\n\n\x0c\
+    \n\x05\x04\x02\x02\x01\x05\x12\x03H\x0b\x11\n\x0c\n\x05\x04\x02\x02\x01\
+    \x01\x12\x03H\x12\x17\n\x0c\n\x05\x04\x02\x02\x01\x03\x12\x03H\x1a\x1b\n\
+    =\n\x02\x04\x03\x12\x04L\0q\x01\x1a1\x20A\x20pipeline\x20step\x20is\x20a\
+    \x20single\x20step\x20in\x20a\x20pipeline.\n\n\n\n\x03\x04\x03\x01\x12\
+    \x03L\x08\x14\n)\n\x04\x04\x03\x02\0\x12\x03N\x02\x12\x1a\x1c\x20Friendl\
+    y\x20name\x20for\x20the\x20step\n\n\x0c\n\x05\x04\x03\x02\0\x05\x12\x03N\
+    \x02\x08\n\x0c\n\x05\x04\x03\x02\0\x01\x12\x03N\t\r\n\x0c\n\x05\x04\x03\
+    \x02\0\x03\x12\x03N\x10\x11\n[\n\x04\x04\x03\x02\x01\x12\x03Q\x02(\x1aN\
+    \x20SDKs\x20should\x20read\x20this\x20when\x20WASM\x20returns\x20success\
+    \x20to\x20determine\x20what\x20to\x20do\x20next\n\n\x0c\n\x05\x04\x03\
+    \x02\x01\x06\x12\x03Q\x02\x18\n\x0c\n\x05\x04\x03\x02\x01\x01\x12\x03Q\
+    \x19#\n\x0c\n\x05\x04\x03\x02\x01\x03\x12\x03Q&'\n[\n\x04\x04\x03\x02\
+    \x02\x12\x03T\x02(\x1aN\x20SDKs\x20should\x20read\x20this\x20when\x20WAS\
+    M\x20returns\x20failure\x20to\x20determine\x20what\x20to\x20do\x20next\n\
+    \n\x0c\n\x05\x04\x03\x02\x02\x06\x12\x03T\x02\x18\n\x0c\n\x05\x04\x03\
+    \x02\x02\x01\x12\x03T\x19#\n\x0c\n\x05\x04\x03\x02\x02\x03\x12\x03T&'\n^\
+    \n\x04\x04\x03\x02\x03\x12\x03W\x02\x13\x1aQ\x20Indicates\x20whether\x20\
+    to\x20use\x20the\x20results\x20from\x20a\x20previous\x20step\x20as\x20in\
+    put\x20to\x20this\x20step\n\n\x0c\n\x05\x04\x03\x02\x03\x05\x12\x03W\x02\
+    \x06\n\x0c\n\x05\x04\x03\x02\x03\x01\x12\x03W\x07\x0e\n\x0c\n\x05\x04\
+    \x03\x02\x03\x03\x12\x03W\x11\x12\nY\n\x04\x04\x03\x02\x04\x12\x03Z\x02&\
     \x1aL\x20SDKs\x20should\x20read\x20this\x20when\x20WASM\x20returns\x20er\
-    ror\x20to\x20determine\x20what\x20to\x20do\x20next\n\n\x0c\n\x05\x04\x02\
-    \x02\x04\x06\x12\x03I\x02\x18\n\x0c\n\x05\x04\x02\x02\x04\x01\x12\x03I\
-    \x19!\n\x0c\n\x05\x04\x02\x02\x04\x03\x12\x03I$%\n\x0c\n\x04\x04\x02\x08\
-    \0\x12\x04K\x02V\x03\n\x0c\n\x05\x04\x02\x08\0\x01\x12\x03K\x08\x0c\n\
-    \x0b\n\x04\x04\x02\x02\x05\x12\x03L\x04)\n\x0c\n\x05\x04\x02\x02\x05\x06\
-    \x12\x03L\x04\x17\n\x0c\n\x05\x04\x02\x02\x05\x01\x12\x03L\x18!\n\x0c\n\
-    \x05\x04\x02\x02\x05\x03\x12\x03L$(\n\x0b\n\x04\x04\x02\x02\x06\x12\x03M\
-    \x04)\n\x0c\n\x05\x04\x02\x02\x06\x06\x12\x03M\x04\x17\n\x0c\n\x05\x04\
-    \x02\x02\x06\x01\x12\x03M\x18!\n\x0c\n\x05\x04\x02\x02\x06\x03\x12\x03M$\
-    (\n\x0b\n\x04\x04\x02\x02\x07\x12\x03N\x04#\n\x0c\n\x05\x04\x02\x02\x07\
-    \x06\x12\x03N\x04\x14\n\x0c\n\x05\x04\x02\x02\x07\x01\x12\x03N\x15\x1b\n\
-    \x0c\n\x05\x04\x02\x02\x07\x03\x12\x03N\x1e\"\n\x0b\n\x04\x04\x02\x02\
-    \x08\x12\x03O\x04#\n\x0c\n\x05\x04\x02\x02\x08\x06\x12\x03O\x04\x14\n\
-    \x0c\n\x05\x04\x02\x02\x08\x01\x12\x03O\x15\x1b\n\x0c\n\x05\x04\x02\x02\
-    \x08\x03\x12\x03O\x1e\"\n\x0b\n\x04\x04\x02\x02\t\x12\x03P\x04#\n\x0c\n\
-    \x05\x04\x02\x02\t\x06\x12\x03P\x04\x14\n\x0c\n\x05\x04\x02\x02\t\x01\
-    \x12\x03P\x15\x1b\n\x0c\n\x05\x04\x02\x02\t\x03\x12\x03P\x1e\"\n\x0b\n\
-    \x04\x04\x02\x02\n\x12\x03Q\x04.\n\x0c\n\x05\x04\x02\x02\n\x06\x12\x03Q\
-    \x04\x19\n\x0c\n\x05\x04\x02\x02\n\x01\x12\x03Q\x1a&\n\x0c\n\x05\x04\x02\
-    \x02\n\x03\x12\x03Q)-\n\x0b\n\x04\x04\x02\x02\x0b\x12\x03R\x04\x1b\n\x0c\
-    \n\x05\x04\x02\x02\x0b\x06\x12\x03R\x04\x10\n\x0c\n\x05\x04\x02\x02\x0b\
-    \x01\x12\x03R\x11\x13\n\x0c\n\x05\x04\x02\x02\x0b\x03\x12\x03R\x16\x1a\n\
-    \x0b\n\x04\x04\x02\x02\x0c\x12\x03S\x04.\n\x0c\n\x05\x04\x02\x02\x0c\x06\
-    \x12\x03S\x04\x19\n\x0c\n\x05\x04\x02\x02\x0c\x01\x12\x03S\x1a&\n\x0c\n\
-    \x05\x04\x02\x02\x0c\x03\x12\x03S)-\n\x0b\n\x04\x04\x02\x02\r\x12\x03T\
-    \x04*\n\x0c\n\x05\x04\x02\x02\r\x06\x12\x03T\x04\x17\n\x0c\n\x05\x04\x02\
-    \x02\r\x01\x12\x03T\x18\"\n\x0c\n\x05\x04\x02\x02\r\x03\x12\x03T%)\n\x0b\
-    \n\x04\x04\x02\x02\x0e\x12\x03U\x048\n\x0c\n\x05\x04\x02\x02\x0e\x06\x12\
-    \x03U\x04\x1e\n\x0c\n\x05\x04\x02\x02\x0e\x01\x12\x03U\x1f0\n\x0c\n\x05\
-    \x04\x02\x02\x0e\x03\x12\x03U37\n}\n\x04\x04\x02\x02\x0f\x12\x03Y\x02#\
+    ror\x20to\x20determine\x20what\x20to\x20do\x20next\n\n\x0c\n\x05\x04\x03\
+    \x02\x04\x06\x12\x03Z\x02\x18\n\x0c\n\x05\x04\x03\x02\x04\x01\x12\x03Z\
+    \x19!\n\x0c\n\x05\x04\x03\x02\x04\x03\x12\x03Z$%\n\x0c\n\x04\x04\x03\x08\
+    \0\x12\x04\\\x02g\x03\n\x0c\n\x05\x04\x03\x08\0\x01\x12\x03\\\x08\x0c\n\
+    \x0b\n\x04\x04\x03\x02\x05\x12\x03]\x04)\n\x0c\n\x05\x04\x03\x02\x05\x06\
+    \x12\x03]\x04\x17\n\x0c\n\x05\x04\x03\x02\x05\x01\x12\x03]\x18!\n\x0c\n\
+    \x05\x04\x03\x02\x05\x03\x12\x03]$(\n\x0b\n\x04\x04\x03\x02\x06\x12\x03^\
+    \x04)\n\x0c\n\x05\x04\x03\x02\x06\x06\x12\x03^\x04\x17\n\x0c\n\x05\x04\
+    \x03\x02\x06\x01\x12\x03^\x18!\n\x0c\n\x05\x04\x03\x02\x06\x03\x12\x03^$\
+    (\n\x0b\n\x04\x04\x03\x02\x07\x12\x03_\x04#\n\x0c\n\x05\x04\x03\x02\x07\
+    \x06\x12\x03_\x04\x14\n\x0c\n\x05\x04\x03\x02\x07\x01\x12\x03_\x15\x1b\n\
+    \x0c\n\x05\x04\x03\x02\x07\x03\x12\x03_\x1e\"\n\x0b\n\x04\x04\x03\x02\
+    \x08\x12\x03`\x04#\n\x0c\n\x05\x04\x03\x02\x08\x06\x12\x03`\x04\x14\n\
+    \x0c\n\x05\x04\x03\x02\x08\x01\x12\x03`\x15\x1b\n\x0c\n\x05\x04\x03\x02\
+    \x08\x03\x12\x03`\x1e\"\n\x0b\n\x04\x04\x03\x02\t\x12\x03a\x04#\n\x0c\n\
+    \x05\x04\x03\x02\t\x06\x12\x03a\x04\x14\n\x0c\n\x05\x04\x03\x02\t\x01\
+    \x12\x03a\x15\x1b\n\x0c\n\x05\x04\x03\x02\t\x03\x12\x03a\x1e\"\n\x0b\n\
+    \x04\x04\x03\x02\n\x12\x03b\x04.\n\x0c\n\x05\x04\x03\x02\n\x06\x12\x03b\
+    \x04\x19\n\x0c\n\x05\x04\x03\x02\n\x01\x12\x03b\x1a&\n\x0c\n\x05\x04\x03\
+    \x02\n\x03\x12\x03b)-\n\x0b\n\x04\x04\x03\x02\x0b\x12\x03c\x04\x1b\n\x0c\
+    \n\x05\x04\x03\x02\x0b\x06\x12\x03c\x04\x10\n\x0c\n\x05\x04\x03\x02\x0b\
+    \x01\x12\x03c\x11\x13\n\x0c\n\x05\x04\x03\x02\x0b\x03\x12\x03c\x16\x1a\n\
+    \x0b\n\x04\x04\x03\x02\x0c\x12\x03d\x04.\n\x0c\n\x05\x04\x03\x02\x0c\x06\
+    \x12\x03d\x04\x19\n\x0c\n\x05\x04\x03\x02\x0c\x01\x12\x03d\x1a&\n\x0c\n\
+    \x05\x04\x03\x02\x0c\x03\x12\x03d)-\n\x0b\n\x04\x04\x03\x02\r\x12\x03e\
+    \x04*\n\x0c\n\x05\x04\x03\x02\r\x06\x12\x03e\x04\x17\n\x0c\n\x05\x04\x03\
+    \x02\r\x01\x12\x03e\x18\"\n\x0c\n\x05\x04\x03\x02\r\x03\x12\x03e%)\n\x0b\
+    \n\x04\x04\x03\x02\x0e\x12\x03f\x048\n\x0c\n\x05\x04\x03\x02\x0e\x06\x12\
+    \x03f\x04\x1e\n\x0c\n\x05\x04\x03\x02\x0e\x01\x12\x03f\x1f0\n\x0c\n\x05\
+    \x04\x03\x02\x0e\x03\x12\x03f37\n}\n\x04\x04\x03\x02\x0f\x12\x03j\x02#\
     \x1a9\x20ID\x20is\x20a\x20uuid(sha256(_wasm_bytes))\x20that\x20is\x20set\
     \x20by\x20server\n\"5\x20protolint:disable:this\x20FIELD_NAMES_LOWER_SNA\
-    KE_CASE\n\n\x0c\n\x05\x04\x02\x02\x0f\x04\x12\x03Y\x02\n\n\x0c\n\x05\x04\
-    \x02\x02\x0f\x05\x12\x03Y\x0b\x11\n\x0c\n\x05\x04\x02\x02\x0f\x01\x12\
-    \x03Y\x12\x1a\n\x0c\n\x05\x04\x02\x02\x0f\x03\x12\x03Y\x1d\"\ng\n\x04\
-    \x04\x02\x02\x10\x12\x03\\\x02%\x1a#\x20WASM\x20module\x20bytes\x20(set\
+    KE_CASE\n\n\x0c\n\x05\x04\x03\x02\x0f\x04\x12\x03j\x02\n\n\x0c\n\x05\x04\
+    \x03\x02\x0f\x05\x12\x03j\x0b\x11\n\x0c\n\x05\x04\x03\x02\x0f\x01\x12\
+    \x03j\x12\x1a\n\x0c\n\x05\x04\x03\x02\x0f\x03\x12\x03j\x1d\"\ng\n\x04\
+    \x04\x03\x02\x10\x12\x03m\x02%\x1a#\x20WASM\x20module\x20bytes\x20(set\
     \x20by\x20server)\n\"5\x20protolint:disable:this\x20FIELD_NAMES_LOWER_SN\
-    AKE_CASE\n\n\x0c\n\x05\x04\x02\x02\x10\x04\x12\x03\\\x02\n\n\x0c\n\x05\
-    \x04\x02\x02\x10\x05\x12\x03\\\x0b\x10\n\x0c\n\x05\x04\x02\x02\x10\x01\
-    \x12\x03\\\x11\x1c\n\x0c\n\x05\x04\x02\x02\x10\x03\x12\x03\\\x1f$\ns\n\
-    \x04\x04\x02\x02\x11\x12\x03_\x02)\x1a/\x20WASM\x20function\x20name\x20t\
-    o\x20execute\x20(set\x20by\x20server)\n\"5\x20protolint:disable:this\x20\
-    FIELD_NAMES_LOWER_SNAKE_CASE\n\n\x0c\n\x05\x04\x02\x02\x11\x04\x12\x03_\
-    \x02\n\n\x0c\n\x05\x04\x02\x02\x11\x05\x12\x03_\x0b\x11\n\x0c\n\x05\x04\
-    \x02\x02\x11\x01\x12\x03_\x12\x20\n\x0c\n\x05\x04\x02\x02\x11\x03\x12\
-    \x03_#(b\x06proto3\
+    AKE_CASE\n\n\x0c\n\x05\x04\x03\x02\x10\x04\x12\x03m\x02\n\n\x0c\n\x05\
+    \x04\x03\x02\x10\x05\x12\x03m\x0b\x10\n\x0c\n\x05\x04\x03\x02\x10\x01\
+    \x12\x03m\x11\x1c\n\x0c\n\x05\x04\x03\x02\x10\x03\x12\x03m\x1f$\ns\n\x04\
+    \x04\x03\x02\x11\x12\x03p\x02)\x1a/\x20WASM\x20function\x20name\x20to\
+    \x20execute\x20(set\x20by\x20server)\n\"5\x20protolint:disable:this\x20F\
+    IELD_NAMES_LOWER_SNAKE_CASE\n\n\x0c\n\x05\x04\x03\x02\x11\x04\x12\x03p\
+    \x02\n\n\x0c\n\x05\x04\x03\x02\x11\x05\x12\x03p\x0b\x11\n\x0c\n\x05\x04\
+    \x03\x02\x11\x01\x12\x03p\x12\x20\n\x0c\n\x05\x04\x03\x02\x11\x03\x12\
+    \x03p#(b\x06proto3\
 ";
 
 /// `FileDescriptorProto` object which was a source for this generated file
@@ -1640,12 +1895,14 @@ pub fn file_descriptor() -> &'static ::protobuf::reflect::FileDescriptor {
             deps.push(super::sp_steps_schema_validation::file_descriptor().clone());
             deps.push(super::sp_steps_transform::file_descriptor().clone());
             deps.push(super::sp_steps_valid_json::file_descriptor().clone());
-            let mut messages = ::std::vec::Vec::with_capacity(3);
+            let mut messages = ::std::vec::Vec::with_capacity(4);
             messages.push(Pipeline::generated_message_descriptor_data());
             messages.push(PipelineStepConditions::generated_message_descriptor_data());
+            messages.push(PipelineStepNotifyData::generated_message_descriptor_data());
             messages.push(PipelineStep::generated_message_descriptor_data());
-            let mut enums = ::std::vec::Vec::with_capacity(1);
+            let mut enums = ::std::vec::Vec::with_capacity(2);
             enums.push(AbortCondition::generated_enum_descriptor_data());
+            enums.push(PipelineStepNotifyDataType::generated_enum_descriptor_data());
             ::protobuf::reflect::GeneratedFileDescriptor::new_generated(
                 file_descriptor_proto(),
                 deps,

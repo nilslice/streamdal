@@ -50,10 +50,27 @@ message PipelineStepConditions {
   AbortCondition abort = 1;
 
   // Should we trigger a notification?
-  bool notify = 2;
+  // This is deprecated and you should use notify_data field instead
+  bool notify = 2 [deprecated=true];
 
   // Should we include additional metadata that SDK should pass back to user?
   map<string, string> metadata = 3;
+
+  PipelineStepNotifyData notify_data = 4;
+}
+
+enum PipelineStepNotifyDataType {
+  PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET = 0;
+  PIPELINE_STEP_NOTIFY_DATA_TYPE_PAYLOAD = 1;
+  PIPELINE_STEP_NOTIFY_DATA_TYPE_PATHS = 2;
+}
+
+message PipelineStepNotifyData {
+  PipelineStepNotifyDataType type = 1;
+
+  // JSON paths to be included in the notification
+  // If type is PAYLOAD, this is ignored
+  repeated string paths = 2;
 }
 
 // A pipeline step is a single step in a pipeline.

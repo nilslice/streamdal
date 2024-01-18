@@ -90,6 +90,12 @@ class AbortCondition(betterproto.Enum):
     ABORT_CONDITION_ABORT_ALL = 2
 
 
+class PipelineStepNotifyDataType(betterproto.Enum):
+    PIPELINE_STEP_NOTIFY_DATA_TYPE_UNSET = 0
+    PIPELINE_STEP_NOTIFY_DATA_TYPE_PAYLOAD = 1
+    PIPELINE_STEP_NOTIFY_DATA_TYPE_PATHS = 2
+
+
 class ClientType(betterproto.Enum):
     CLIENT_TYPE_UNSET = 0
     CLIENT_TYPE_SDK = 1
@@ -343,13 +349,35 @@ class PipelineStepConditions(betterproto.Message):
     """Should we abort execution?"""
 
     notify: bool = betterproto.bool_field(2)
-    """Should we trigger a notification?"""
+    """
+    Should we trigger a notification? This is deprecated and you should use
+    notify_data field instead
+    """
 
     metadata: Dict[str, str] = betterproto.map_field(
         3, betterproto.TYPE_STRING, betterproto.TYPE_STRING
     )
     """
     Should we include additional metadata that SDK should pass back to user?
+    """
+
+    notify_data: "PipelineStepNotifyData" = betterproto.message_field(4)
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        if self.is_set("notify"):
+            warnings.warn(
+                "PipelineStepConditions.notify is deprecated", DeprecationWarning
+            )
+
+
+@dataclass(eq=False, repr=False)
+class PipelineStepNotifyData(betterproto.Message):
+    type: "PipelineStepNotifyDataType" = betterproto.enum_field(1)
+    paths: List[str] = betterproto.string_field(2)
+    """
+    JSON paths to be included in the notification If type is PAYLOAD, this is
+    ignored
     """
 
 
