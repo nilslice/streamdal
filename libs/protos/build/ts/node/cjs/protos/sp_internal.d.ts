@@ -69,7 +69,8 @@ export interface NotifyRequest {
      */
     pipelineId: string;
     /**
-     * @generated from protobuf field: string step_name = 2;
+     * @deprecated
+     * @generated from protobuf field: string step_name = 2 [deprecated = true];
      */
     stepName: string;
     /**
@@ -80,6 +81,10 @@ export interface NotifyRequest {
      * @generated from protobuf field: int64 occurred_at_unix_ts_utc = 4;
      */
     occurredAtUnixTsUtc: string;
+    /**
+     * @generated from protobuf field: string step_id = 5;
+     */
+    stepId: string;
 }
 /**
  * @generated from protobuf message protos.MetricsRequest

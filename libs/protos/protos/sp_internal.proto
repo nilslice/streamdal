@@ -69,9 +69,10 @@ message HeartbeatRequest {
 
 message NotifyRequest {
   string pipeline_id = 1;
-  string step_name = 2;
+  string step_name = 2 [deprecated=true];
   Audience audience = 3;
   int64 occurred_at_unix_ts_utc = 4;
+  string step_id = 5;
 }
 
 message MetricsRequest {

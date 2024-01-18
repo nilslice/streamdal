@@ -66,16 +66,18 @@ class NewAudienceRequest(_message.Message):
     def __init__(self, session_id: _Optional[str] = ..., audience: _Optional[_Union[_sp_common_pb2.Audience, _Mapping]] = ...) -> None: ...
 
 class NotifyRequest(_message.Message):
-    __slots__ = ["audience", "occurred_at_unix_ts_utc", "pipeline_id", "step_name"]
+    __slots__ = ["audience", "occurred_at_unix_ts_utc", "pipeline_id", "step_id", "step_name"]
     AUDIENCE_FIELD_NUMBER: _ClassVar[int]
     OCCURRED_AT_UNIX_TS_UTC_FIELD_NUMBER: _ClassVar[int]
     PIPELINE_ID_FIELD_NUMBER: _ClassVar[int]
+    STEP_ID_FIELD_NUMBER: _ClassVar[int]
     STEP_NAME_FIELD_NUMBER: _ClassVar[int]
     audience: _sp_common_pb2.Audience
     occurred_at_unix_ts_utc: int
     pipeline_id: str
+    step_id: str
     step_name: str
-    def __init__(self, pipeline_id: _Optional[str] = ..., step_name: _Optional[str] = ..., audience: _Optional[_Union[_sp_common_pb2.Audience, _Mapping]] = ..., occurred_at_unix_ts_utc: _Optional[int] = ...) -> None: ...
+    def __init__(self, pipeline_id: _Optional[str] = ..., step_name: _Optional[str] = ..., audience: _Optional[_Union[_sp_common_pb2.Audience, _Mapping]] = ..., occurred_at_unix_ts_utc: _Optional[int] = ..., step_id: _Optional[str] = ...) -> None: ...
 
 class RegisterRequest(_message.Message):
     __slots__ = ["audiences", "client_info", "dry_run", "service_name", "session_id"]

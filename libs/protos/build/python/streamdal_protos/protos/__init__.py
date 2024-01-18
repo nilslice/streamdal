@@ -961,6 +961,12 @@ class NotifyRequest(betterproto.Message):
     step_name: str = betterproto.string_field(2)
     audience: "Audience" = betterproto.message_field(3)
     occurred_at_unix_ts_utc: int = betterproto.int64_field(4)
+    step_id: str = betterproto.string_field(5)
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        if self.is_set("step_name"):
+            warnings.warn("NotifyRequest.step_name is deprecated", DeprecationWarning)
 
 
 @dataclass(eq=False, repr=False)

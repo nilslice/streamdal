@@ -146,11 +146,12 @@ class NotifyRequest$Type extends runtime_5.MessageType {
             { no: 1, name: "pipeline_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "step_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "audience", kind: "message", T: () => sp_common_5.Audience },
-            { no: 4, name: "occurred_at_unix_ts_utc", kind: "scalar", T: 3 /*ScalarType.INT64*/ }
+            { no: 4, name: "occurred_at_unix_ts_utc", kind: "scalar", T: 3 /*ScalarType.INT64*/ },
+            { no: 5, name: "step_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value) {
-        const message = { pipelineId: "", stepName: "", occurredAtUnixTsUtc: "0" };
+        const message = { pipelineId: "", stepName: "", occurredAtUnixTsUtc: "0", stepId: "" };
         globalThis.Object.defineProperty(message, runtime_4.MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             (0, runtime_3.reflectionMergePartial)(this, message, value);
@@ -164,7 +165,7 @@ class NotifyRequest$Type extends runtime_5.MessageType {
                 case /* string pipeline_id */ 1:
                     message.pipelineId = reader.string();
                     break;
-                case /* string step_name */ 2:
+                case /* string step_name = 2 [deprecated = true];*/ 2:
                     message.stepName = reader.string();
                     break;
                 case /* protos.Audience audience */ 3:
@@ -172,6 +173,9 @@ class NotifyRequest$Type extends runtime_5.MessageType {
                     break;
                 case /* int64 occurred_at_unix_ts_utc */ 4:
                     message.occurredAtUnixTsUtc = reader.int64().toString();
+                    break;
+                case /* string step_id */ 5:
+                    message.stepId = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -188,7 +192,7 @@ class NotifyRequest$Type extends runtime_5.MessageType {
         /* string pipeline_id = 1; */
         if (message.pipelineId !== "")
             writer.tag(1, runtime_1.WireType.LengthDelimited).string(message.pipelineId);
-        /* string step_name = 2; */
+        /* string step_name = 2 [deprecated = true]; */
         if (message.stepName !== "")
             writer.tag(2, runtime_1.WireType.LengthDelimited).string(message.stepName);
         /* protos.Audience audience = 3; */
@@ -197,6 +201,9 @@ class NotifyRequest$Type extends runtime_5.MessageType {
         /* int64 occurred_at_unix_ts_utc = 4; */
         if (message.occurredAtUnixTsUtc !== "0")
             writer.tag(4, runtime_1.WireType.Varint).int64(message.occurredAtUnixTsUtc);
+        /* string step_id = 5; */
+        if (message.stepId !== "")
+            writer.tag(5, runtime_1.WireType.LengthDelimited).string(message.stepId);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? runtime_2.UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
