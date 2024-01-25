@@ -106,13 +106,12 @@ export const Pipeline = new Pipeline$Type();
 class PipelineStepConditions$Type extends MessageType {
     constructor() {
         super("protos.PipelineStepConditions", [
-            { no: 1, name: "abort", kind: "enum", T: () => ["protos.AbortCondition", AbortCondition, "ABORT_CONDITION_"] },
-            { no: 2, name: "notify", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 3, name: "metadata", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
+            { no: 1, name: "abort", kind: "enum", opt: true, T: () => ["protos.AbortCondition", AbortCondition, "ABORT_CONDITION_"] },
+            { no: 2, name: "notify", kind: "scalar", opt: true, T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value) {
-        const message = { abort: 0, notify: false, metadata: {} };
+        const message = {};
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -123,14 +122,11 @@ class PipelineStepConditions$Type extends MessageType {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* protos.AbortCondition abort */ 1:
+                case /* optional protos.AbortCondition abort */ 1:
                     message.abort = reader.int32();
                     break;
-                case /* bool notify */ 2:
+                case /* optional bool notify */ 2:
                     message.notify = reader.bool();
-                    break;
-                case /* map<string, string> metadata */ 3:
-                    this.binaryReadMap3(message.metadata, reader, options);
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -143,32 +139,13 @@ class PipelineStepConditions$Type extends MessageType {
         }
         return message;
     }
-    binaryReadMap3(map, reader, options) {
-        let len = reader.uint32(), end = reader.pos + len, key, val;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case 1:
-                    key = reader.string();
-                    break;
-                case 2:
-                    val = reader.string();
-                    break;
-                default: throw new globalThis.Error("unknown map entry field for field protos.PipelineStepConditions.metadata");
-            }
-        }
-        map[key !== null && key !== void 0 ? key : ""] = val !== null && val !== void 0 ? val : "";
-    }
     internalBinaryWrite(message, writer, options) {
-        /* protos.AbortCondition abort = 1; */
-        if (message.abort !== 0)
+        /* optional protos.AbortCondition abort = 1; */
+        if (message.abort !== undefined)
             writer.tag(1, WireType.Varint).int32(message.abort);
-        /* bool notify = 2; */
-        if (message.notify !== false)
+        /* optional bool notify = 2; */
+        if (message.notify !== undefined)
             writer.tag(2, WireType.Varint).bool(message.notify);
-        /* map<string, string> metadata = 3; */
-        for (let k of Object.keys(message.metadata))
-            writer.tag(3, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.metadata[k]).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

@@ -61,23 +61,15 @@ export interface PipelineStepConditions {
     /**
      * Should we abort execution?
      *
-     * @generated from protobuf field: protos.AbortCondition abort = 1;
+     * @generated from protobuf field: optional protos.AbortCondition abort = 1;
      */
-    abort: AbortCondition;
+    abort?: AbortCondition;
     /**
      * Should we trigger a notification?
      *
-     * @generated from protobuf field: bool notify = 2;
+     * @generated from protobuf field: optional bool notify = 2;
      */
-    notify: boolean;
-    /**
-     * Should we include additional metadata that SDK should pass back to user?
-     *
-     * @generated from protobuf field: map<string, string> metadata = 3;
-     */
-    metadata: {
-        [key: string]: string;
-    };
+    notify?: boolean;
 }
 /**
  * A pipeline step is a single step in a pipeline.
@@ -233,7 +225,6 @@ declare class PipelineStepConditions$Type extends MessageType<PipelineStepCondit
     constructor();
     create(value?: PartialMessage<PipelineStepConditions>): PipelineStepConditions;
     internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: PipelineStepConditions): PipelineStepConditions;
-    private binaryReadMap3;
     internalBinaryWrite(message: PipelineStepConditions, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
 }
 /**

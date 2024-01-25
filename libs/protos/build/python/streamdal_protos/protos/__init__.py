@@ -356,18 +356,13 @@ class PipelineStepConditions(betterproto.Message):
     notify and on_error.
     """
 
-    abort: "AbortCondition" = betterproto.enum_field(1)
+    abort: Optional["AbortCondition"] = betterproto.enum_field(
+        1, optional=True, group="_abort"
+    )
     """Should we abort execution?"""
 
-    notify: bool = betterproto.bool_field(2)
+    notify: Optional[bool] = betterproto.bool_field(2, optional=True, group="_notify")
     """Should we trigger a notification?"""
-
-    metadata: Dict[str, str] = betterproto.map_field(
-        3, betterproto.TYPE_STRING, betterproto.TYPE_STRING
-    )
-    """
-    Should we include additional metadata that SDK should pass back to user?
-    """
 
 
 @dataclass(eq=False, repr=False)
