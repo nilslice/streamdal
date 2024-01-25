@@ -58,6 +58,37 @@ pub fn write_response(
     return ptr;
 }
 
+/// Generate a WASMResponse from params, serialize it, add terminators, return WASMResponse.
+pub fn into_response(
+    output_payload: Option<&[u8]>,
+    output_step: Option<&[u8]>,
+    interstep: Option<InterStepResult>,
+    exit_code: WASMExitCode,
+    exit_msg: String,
+) -> WASMResponse {
+    let mut response = WASMResponse::new();
+
+    response.output_payload = match output_payload {
+        Some(payload) => payload.to_vec(),
+        None => vec![],
+    };
+
+    response.output_step = match output_step {
+        Some(step) => Some(step.to_vec()),
+        None => None,
+    };
+
+    response.exit_code = protobuf::EnumOrUnknown::from(exit_code);
+    response.exit_msg = exit_msg;
+
+    if let Some(interstep) = interstep {
+        response.inter_step_result.unwrap_or_default();
+        response.inter_step_result = MessageField(Some(Box::new(interstep)));
+    }
+
+    return response;
+}
+
 /// Small helper for write_response
 pub fn write_error_response(wasm_exit_code: WASMExitCode, error: String) -> u64 {
     write_response(None, None, None, wasm_exit_code, error)
