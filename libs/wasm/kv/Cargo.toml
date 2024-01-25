@@ -13,3 +13,5 @@ protobuf = "3.2.0"
 streamdal-protos = { path="../../protos/build/rust/protos" }
 common = { path = "../common" }
 streamdal-wasm-detective = { path = "../../wasm-detective" }
+extism-pdk = { version = "1.0.1", features = ["protobuf"]}
+anyhow = "1.0.79"
